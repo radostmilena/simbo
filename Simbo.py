@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import random as rd
 from scipy import constants
 from scipy.linalg import lstsq
+from matplotlib.animation import FuncAnimation
+plt.rcParams.update({'font.size': 6.5})
 
 k_B = constants.value(u'Boltzmann constant')
 h = constants.value(u'Planck constant')
@@ -59,7 +61,7 @@ def exchange(ifrom, ito, nop, levels, idist, dist_sum, istep):
     return(levels, maxlev, idist, dist_sum, istep)
 
 #calculate distribution over energy levels
-def recdist(nop, levels, maxlev, all_levels):
+def recdist(nop, levels, maxlev, all_levels, all_distr):
     distr = np.zeros(maxlev)
 
     for i in range(0, nop):
@@ -76,36 +78,124 @@ def recdist(nop, levels, maxlev, all_levels):
         cum_levels.append(element)
     all_levels.append(cum_levels)
 
-    return(distr, all_levels)
-
-#calculate accumulated distribution
-def accum(maxlev, idist, distr, dist_sum, nstep):
-    for i in range(0, maxlev):
-            idist[i] = distr[i]+idist[i]
-            if nstep != 0:
-                dist_sum[i] = idist[i]/nstep
-
-    return(idist, dist_sum)
-
-#plot energy levels and distribution
-def plot_AB(nop, levels, distr, maxlev, x):
-    new_levels = np.copy(levels)
-    new_levels[new_levels==0] = 0.05
-
-    ax1.bar(x, new_levels)
-    xticks = np.arange(0, nop+1, 2)
-    ax1.set_xticks(xticks)
-    ax1.set_xlabel('molecule')
-    ax1.set_ylabel('energy')
-    ax1.set_ylim(-0.2, max(levels)+1)
+    add = nop - len(distr)
+    if add > 0:
+       addarray = np.zeros(add)
+       distr = np.concatenate((distr, addarray))
 
     new_distr = np.copy(distr)
     new_distr[new_distr==0] = 0.05
 
-    x = np.arange(0, len(new_distr), 1)
-    ax2.bar(x, new_distr)
+    cum_distr = []
+    for element in new_distr:
+        cum_distr.append(element)
+    all_distr.append(cum_distr)
+
+    return(distr, all_levels, all_distr)
+
+#calculate accumulated distribution
+def accum(nop, maxlev, idist, distr, dist_sum, nstep, all_dist_sum):
+    if nstep != 0:
+        for i in range(0, maxlev):
+            idist[i] = distr[i]+idist[i]
+            dist_sum[i] = idist[i]/nstep
+
+    add = nop - len(dist_sum)
+    if add > 0:
+       addarray = np.zeros(add)
+       dist_sum = np.concatenate((dist_sum, addarray))
+
+    new_dist_sum = np.copy(dist_sum)
+    new_dist_sum[new_dist_sum==0] = 0.05
+
+    cum_dist_sum = []
+    for element in new_dist_sum:
+        cum_dist_sum.append(element)
+    all_dist_sum.append(cum_dist_sum)
+
+    return(idist, dist_sum, all_dist_sum)
+
+#calculate average energy form distribution
+def calc_Eav(maxlev, distr, nop):
+    U = 0
+
+    for j in range(0, maxlev):
+        U+=j*distr[j]
+
+    print('Average energy: %.4fe-21 J'%((U/nop)*h*c*nu*1e21))
+
+#calculate Boltzmann energy on the fly
+def calc_Bolt_ent(nop, distr):
+    num = np.math.factorial(nop)
+    denom = 1
+
+    for i in distr:
+        denom*=np.math.factorial(i)
+
+    W = num/denom
+    print('Statistical weight: %.1f' %(W))
+
+    S_w = k_B * np.log(W)
+    print('Boltzmann entropy: %.4fe-21 J/K' %(S_w*1e21))
+
+#calculate Boltzmann entropy for average distribution
+def calc_av_ent(nop, dist_sum):
+    num = nop*np.log(nop)-nop #Stirling approximation
+    denom = 0
+
+    for i in dist_sum:
+        if i != 0:
+            denom+=(i*np.log(i)-i) #Stirling approximation
+
+    lnW=num-denom
+    print('Statistical weight: %.1f' %(np.exp(lnW)))
+
+    S_a = k_B * lnW
+    print('Average entropy: %.4fe-21 J/K' %(S_a*1e21))
+
+#plot probability distribution and fit temperature
+def calc_prob_temp(dist_sum, nop):
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12,4))
+
+    #probability distribution
+    prdist = np.zeros(len(dist_sum))
+    lnprdist = np.zeros(len(dist_sum))
+
+    for i in range(len(dist_sum)):
+        prdist[i] = dist_sum[i]/nop
+        if prdist[i] != 0:
+           lnprdist[i] = np.log(prdist[i])
+        else:
+            lnprdist[i] = 0
+
+    y = lnprdist[lnprdist != 0]
+
+    #least square fit to get temperature
+
+    x = np.arange(0, len(y))
+    M = x[:, np.newaxis]**[0, 1]
+    p, res, rnk, s = lstsq(M, y)
+    yy = p[0] + p[1]*x
+    temp = -1/p[1]
+    realtemp = temp*((h*c*nu)/k_B)
+    exp = (h*c*nu*1e23)/(k_B*1e23)
+
+    x1 = np.arange(0, len(dist_sum))
+    x2 = np.arange(0, len(dist_sum), 0.1)
+    ax1.bar(x1, dist_sum, color='b')
+    ax1.set_xticks(x1)
+    ax1.set_xlabel('energy level')
+    ax1.set_ylabel('$\\rho (n)$')
+    ax1.set_xlim(-1, max(x1)+1)
+    q = np.sum(np.exp(-(x1)/temp))
+    bd = nop*(np.exp(-(x2)/temp)/q)
+    ax1.plot(x2, bd, color='k')
+
+    ax2.scatter(x, y, color='b')
     ax2.set_xticks(x)
-    ax2.set_ylabel('nr. of molecules')
     ax2.set_xlabel('energy level')
-    ax2.set_xlim(-1, max(x)+1)
-    ax2.set_ylim(-0.2, max(new_distr)+1)
+    ax2.set_ylabel('ln($\\rho (n)$)')
+    ax2.plot(x, yy, '--', color='gray')
+
+    print('%.4f red.un.' %(temp), '%.4f K' %(temp*((h*c*nu)/k_B)))
+    print('Average energy: %.4fe-21 J'%((h*c*nu)/(np.exp(exp*(1/realtemp))-1)*1e21))
