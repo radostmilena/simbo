@@ -25,7 +25,7 @@ def generate_levels(en, nop):
 
 #set everything zero
 def setzero(levels):
-    maxlev = int(sum(levels))
+    maxlev = int(sum(levels)+1)
     idist = np.zeros(maxlev)
     dist_sum = np.zeros(maxlev)
     nstep = 0
@@ -56,7 +56,7 @@ def recdist(nop, levels, maxlev, all_levels, all_distr):
     distr = np.zeros(maxlev)
 
     for i in range(0, nop):
-        if levels[i] <= maxlev:
+        if levels[i] <= maxlev-1:
             distr[int(levels[i])] += 1
         else:
             print('error')
