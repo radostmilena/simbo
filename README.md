@@ -1,1 +1,1 @@
-#Jupyter Notebook for Boltzmann lab
+Jupyter Notebook and additional functions for Boltzmann lab
