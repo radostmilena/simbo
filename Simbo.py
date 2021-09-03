@@ -25,7 +25,7 @@ def generate_levels(en, nop):
 
 #set everything zero
 def setzero(levels):
-    maxlev = int(max(levels)+1)
+    maxlev = int(sum(levels))
     idist = np.zeros(maxlev)
     dist_sum = np.zeros(maxlev)
     nstep = 0
@@ -43,21 +43,13 @@ def getrand(nop):
     return(ifrom, ito)
 
 #exchange energies between levels
-def exchange(ifrom, ito, nop, levels, idist, dist_sum, istep):
+def exchange(ifrom, ito, nop, levels, istep, maxlev):
     if (ito >= 0 and ito < nop) and (ifrom >= 0 and ifrom < nop) and levels[ifrom] > 0:
         levels[ifrom]-=1
         levels[ito]+=1
         istep+=1
 
-    #new limit for levels
-    maxlev = int(max(levels)+1)
-    add = maxlev - len(idist)
-    if add > 0:
-        addarray = np.zeros(add)
-        idist = np.concatenate((idist, addarray))
-        dist_sum = np.concatenate((dist_sum, addarray))
-
-    return(levels, maxlev, idist, dist_sum, istep)
+    return(levels, istep)
 
 #calculate distribution over energy levels
 def recdist(nop, levels, maxlev, all_levels, all_distr):
@@ -77,11 +69,6 @@ def recdist(nop, levels, maxlev, all_levels, all_distr):
         cum_levels.append(element)
     all_levels.append(cum_levels)
 
-    add = nop - len(distr)
-    if add > 0:
-       addarray = np.zeros(add)
-       distr = np.concatenate((distr, addarray))
-
     new_distr = np.copy(distr)
     new_distr[new_distr==0] = 0.05
 
@@ -94,15 +81,12 @@ def recdist(nop, levels, maxlev, all_levels, all_distr):
 
 #calculate accumulated distribution
 def accum(nop, maxlev, idist, distr, dist_sum, nstep, all_dist_sum):
-    if nstep != 0:
-        for i in range(0, maxlev):
-            idist[i] = distr[i]+idist[i]
+    for i in range(0, maxlev):
+        idist[i] = distr[i]+idist[i]
+        if nstep != 0:
             dist_sum[i] = idist[i]/nstep
-
-    add = nop - len(dist_sum)
-    if add > 0:
-       addarray = np.zeros(add)
-       dist_sum = np.concatenate((dist_sum, addarray))
+        else:
+            dist_sum[i] = idist[i]
 
     new_dist_sum = np.copy(dist_sum)
     new_dist_sum[new_dist_sum==0] = 0.05
@@ -112,9 +96,9 @@ def accum(nop, maxlev, idist, distr, dist_sum, nstep, all_dist_sum):
         cum_dist_sum.append(element)
     all_dist_sum.append(cum_dist_sum)
 
-    return(idist, dist_sum, all_dist_sum)
+    return(idist, dist_sum, all_dist_sum, nstep)
 
-#calculate average energy form distribution
+#calculate average energy from distribution
 def calc_Eav(maxlev, distr, nop):
     U = 0
 
