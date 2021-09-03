@@ -43,7 +43,7 @@ def getrand(nop):
     return(ifrom, ito)
 
 #exchange energies between levels
-def exchange(ifrom, ito, nop, levels, istep, maxlev):
+def exchange(ifrom, ito, nop, levels, istep):
     if (ito >= 0 and ito < nop) and (ifrom >= 0 and ifrom < nop) and levels[ifrom] > 0:
         levels[ifrom]-=1
         levels[ito]+=1
@@ -136,10 +136,43 @@ def calc_av_ent(nop, dist_sum):
     S_a = k_B * lnW
     print('Average entropy: %.4fe-21 J/K' %(S_a*1e21))
 
-#plot probability distribution and fit temperature
-def calc_prob_temp(dist_sum, nop):
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12,4))
+#find maxima for plotting animation
+def find_max(all_levels, all_distr, all_dist_sum):
 
+    max_levels = []
+    for levels in all_levels:
+        max_levels.append(max(levels))
+
+    max_level = max(max_levels)
+
+    max_distr = []
+    for distr in all_distr:
+        max_distr.append(max(distr))
+
+    max_dist = max(max_distr)
+
+    max_dist_sum = []
+    for dist_sum in all_dist_sum:
+        max_dist_sum.append(max(dist_sum))
+
+    max_distr_sum = max(max_dist_sum)
+
+    return(max_level, max_dist, max_distr_sum)
+
+#find skips
+def find_skips(maximum):
+    skips = [1, 2, 5]
+    if maximum >= 15 and maximum <= 25:
+        skip = skips[1]
+    elif maximum > 25:
+        skip = skips[2]
+    else:
+        skip = skips[0]
+
+    return(skip)
+
+#calculate probability distribution and fit temperature
+def calc_prob_temp(dist_sum, nop):
     #probability distribution
     prdist = np.zeros(len(dist_sum))
     lnprdist = np.zeros(len(dist_sum))
@@ -163,15 +196,46 @@ def calc_prob_temp(dist_sum, nop):
     realtemp = temp*((h*c*nu)/k_B)
     exp = (h*c*nu*1e23)/(k_B*1e23)
 
-    x1 = np.arange(0, len(dist_sum))
+    print('Temperature: ', '%.4f red.un.' %(temp), 'and %.4f K' %(temp*((h*c*nu)/k_B)))
+#    print('Average energy: %.4fe-21 J'%((h*c*nu)/(np.exp(exp*(1/realtemp))-1)*1e21))
+
+#plot prob. distribution and lstq fit
+def plot_prob_temp(dist_sum, nop, max_level):
+    #probability distribution
+    prdist = np.zeros(len(dist_sum))
+    lnprdist = np.zeros(len(dist_sum))
+
+    for i in range(len(dist_sum)):
+        prdist[i] = dist_sum[i]/nop
+        if prdist[i] != 0:
+           lnprdist[i] = np.log(prdist[i])
+        else:
+            lnprdist[i] = 0
+
+    y = lnprdist[lnprdist != 0]
+
+    #least square fit to get temperature
+
+    x = np.arange(0, len(y))
+    M = x[:, np.newaxis]**[0, 1]
+    p, res, rnk, s = lstsq(M, y)
+    yy = p[0] + p[1]*x
+    temp = -1/p[1]
+    realtemp = temp*((h*c*nu)/k_B)
+    exp = (h*c*nu*1e23)/(k_B*1e23)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12,4))
+
+    x1 = np.arange(0, len(dist_sum), 1)
+    xticks = np.arange(0, max_level+1, find_skips(max_level))
     x2 = np.arange(0, len(dist_sum), 0.1)
-    ax1.bar(x1, dist_sum, color='b')
-    ax1.set_xticks(x1)
+    ax1.bar(x1, prdist, color='b')
+    ax1.set_xticks(xticks)
     ax1.set_xlabel('energy level')
     ax1.set_ylabel('$\\rho (n)$')
-    ax1.set_xlim(-1, max(x1)+1)
+    ax1.set_xlim(-0.8, max_level+1-0.2)
     q = np.sum(np.exp(-(x1)/temp))
-    bd = nop*(np.exp(-(x2)/temp)/q)
+    bd = np.exp(-(x2)/temp)/q
     ax1.plot(x2, bd, color='k')
 
     ax2.scatter(x, y, color='b')
@@ -180,5 +244,3 @@ def calc_prob_temp(dist_sum, nop):
     ax2.set_ylabel('ln($\\rho (n)$)')
     ax2.plot(x, yy, '--', color='gray')
 
-    print('%.4f red.un.' %(temp), '%.4f K' %(temp*((h*c*nu)/k_B)))
-    print('Average energy: %.4fe-21 J'%((h*c*nu)/(np.exp(exp*(1/realtemp))-1)*1e21))
