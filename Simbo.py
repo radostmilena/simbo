@@ -105,7 +105,7 @@ def calc_Eav(maxlev, distr, nop):
     for j in range(0, maxlev):
         U+=j*distr[j]
 
-    print('Average energy: %.4fe-21 J'%((U/nop)*h*c*nu*1e21))
+    return(U/nop)
 
 #calculate Boltzmann energy on the fly
 def calc_Bolt_ent(nop, distr):
@@ -116,10 +116,9 @@ def calc_Bolt_ent(nop, distr):
         denom*=np.math.factorial(i)
 
     W = num/denom
-    print('Statistical weight: %.1f' %(W))
-
     S_w = k_B * np.log(W)
-    print('Boltzmann entropy: %.4fe-21 J/K' %(S_w*1e21))
+
+    return(W, S_w)
 
 #calculate Boltzmann entropy for average distribution
 def calc_av_ent(nop, dist_sum):
@@ -131,10 +130,9 @@ def calc_av_ent(nop, dist_sum):
             denom+=(i*np.log(i)-i) #Stirling approximation
 
     lnW=num-denom
-    print('Statistical weight: %.1f' %(np.exp(lnW)))
-
     S_a = k_B * lnW
-    print('Average entropy: %.4fe-21 J/K' %(S_a*1e21))
+
+    return(S_a)
 
 #find maxima for plotting animation
 def find_max(all_levels, all_distr, all_dist_sum):
@@ -196,8 +194,9 @@ def calc_prob_temp(dist_sum, nop):
     realtemp = temp*((h*c*nu)/k_B)
     exp = (h*c*nu*1e23)/(k_B*1e23)
 
-    print('Temperature: ', '%.4f red.un.' %(temp), 'and %.4f K' %(temp*((h*c*nu)/k_B)))
 #    print('Average energy: %.4fe-21 J'%((h*c*nu)/(np.exp(exp*(1/realtemp))-1)*1e21))
+
+    return(temp)
 
 #plot prob. distribution and lstq fit
 def plot_prob_temp(dist_sum, nop, max_level):
