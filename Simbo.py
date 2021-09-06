@@ -190,7 +190,12 @@ def calc_prob_temp(dist_sum, nop):
     M = x[:, np.newaxis]**[0, 1]
     p, res, rnk, s = lstsq(M, y)
     yy = p[0] + p[1]*x
-    temp = -1/p[1]
+    if p[1] > 0:
+        temp = 1/p[1]
+    elif p[1] < 0:
+        temp = -1/p[1]
+    elif p[1] < 1:
+        temp = np.nan
     realtemp = temp*((h*c*nu)/k_B)
     exp = (h*c*nu*1e23)/(k_B*1e23)
 
@@ -219,7 +224,12 @@ def plot_prob_temp(dist_sum, nop, max_level):
     M = x[:, np.newaxis]**[0, 1]
     p, res, rnk, s = lstsq(M, y)
     yy = p[0] + p[1]*x
-    temp = -1/p[1]
+    if p[1] > 0:
+        temp = 1/p[1]
+    elif p[1] < 0:
+        temp = -1/p[1]
+    else:
+        temp = np.nan
     realtemp = temp*((h*c*nu)/k_B)
     exp = (h*c*nu*1e23)/(k_B*1e23)
 
