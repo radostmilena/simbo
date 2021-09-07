@@ -253,3 +253,56 @@ def plot_prob_temp(dist_sum, nop, max_level):
     ax2.set_ylabel('ln($\\rho (n)$)')
     ax2.plot(x, yy, '--', color='gray')
 
+#append to stored data
+def store_data(all_uav, maxlev, nop, distr, all_wbolt, all_sw, all_sa, dist_sum, all_temp):
+    all_uav.append(calc_Eav(maxlev, distr, nop))
+    W, S_w = calc_Bolt_ent(nop, distr)
+    all_wbolt.append(W)
+    all_sw.append(S_w)
+    all_sa.append(calc_av_ent(nop, dist_sum))
+    all_temp.append(calc_prob_temp(dist_sum, nop))
+
+    return(all_uav, all_wbolt, all_sw, all_sa, all_temp)
+
+#append equilibration data
+def store_eq_data(zero_array, all_dist_sum, all_uav, maxlev, distr, nop, all_wbolt, all_sw, all_sa, all_temp):
+    all_dist_sum.append(zero_array)
+    all_uav.append(calc_Eav(maxlev, distr, nop))
+    W, S_w = calc_Bolt_ent(nop, distr)
+    all_wbolt.append(W)
+    all_sw.append(S_w)
+    all_sa.append('undefined')
+    all_temp.append('undefined')
+
+    return(all_dist_sum, all_uav, all_wbolt, all_sw, all_sa, all_temp)
+
+#auxiliary functions
+
+def print_w_sw(all_wbolt, all_sw, start, end):
+   for i, x, y in zip(np.arange(len(all_wbolt[start:end])), all_wbolt[start:end], all_sw[start:end]):
+       print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4fe-21 J/K' %(y*1e21))
+
+def get_w_sw(nop, en):
+    levels = generate_levels(en, nop)
+    W, S_w = calc_Bolt_ent(nop, levels)
+
+    plt.rcParams['figure.figsize'] = [4, 3]
+
+    max_level = max(levels)+3
+    labels1 = np.arange(1, nop+1, 1)
+    trimmed_dist1 = levels
+
+    xrange_ = np.arange(0, nop+1, find_skips(nop+1))
+    xticks = xrange_[1:]
+    xticks = [1, *xticks]
+    plt.xticks(xticks)
+    plt.yticks(np.arange(0, max_level+1, find_skips(max_level)))
+    plt.xlabel('molecule')
+    plt.ylabel('energy')
+    plt.ylim(-0.2, max_level+1-0.6)
+    plt.bar(x=labels1, height=trimmed_dist1, color='b')
+
+    plt.tight_layout()
+    plt.show()
+
+    print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4fe-21 J/K' %(S_w*1e21))
