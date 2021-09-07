@@ -15,7 +15,6 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
     def __init__(self):
 	super(extra_functions, self).__init__()     
 
-
     def plot_prob_temp(self, dist_sum, max_level):
         """
         Calculates probability distribution/temperature and plots Boltzmann distribution and fit.
@@ -24,7 +23,7 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         lnprdist = np.zeros(len(dist_sum))
 
         for i in range(len(dist_sum)):
-            prdist[i] = dist_sum[i]/nop
+            prdist[i] = dist_sum[i]/self.nop
             if prdist[i] != 0:
                lnprdist[i] = np.log(prdist[i])
             else:
@@ -69,7 +68,7 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         """
 	for i, x, y in zip(np.arange(len(all_wbolt[start:end])), all_wbolt[start:end], all_sw[start:end]):
             if units == 'default':
-	       print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4fe-21 J/K' %(y*1e21))
+	       print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4fe-21 J/K' %(y*self.k_B*1e21))
             else:
 	       print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4f red. un.' %(y))
 
@@ -100,7 +99,7 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         plt.show()
 
         if units == 'default':
-	    print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4fe-21 J/K' %(S_w*1e21))
+	    print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4fe-21 J/K' %(S_w*self.k_B*1e21))
         else:
 	    print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4f red. un.' %(S_w))
 

@@ -96,11 +96,11 @@ class run_simbo:
         """
         Get random molecules.
         """
-        ito = int(np.ceil(rd.random()*nop-1))
-        ifrom = int(np.ceil(rd.random()*nop-1))
+        ito = int(np.ceil(rd.random()*self.nop-1))
+        ifrom = int(np.ceil(rd.random()*self.nop-1))
 
         while (ito == ifrom):
-            ito = int(np.ceil(rd.random()*nop-1))
+            ito = int(np.ceil(rd.random()*self.nop-1))
 
         return(ifrom, ito)
 
@@ -108,7 +108,7 @@ class run_simbo:
         """
         Exchange energy between levels.
         """
-        if (ito >= 0 and ito < nop) and (ifrom >= 0 and ifrom < nop) and levels[ifrom] > 0:
+        if (ito >= 0 and ito < self.nop) and (ifrom >= 0 and ifrom < self.nop) and levels[ifrom] > 0:
             levels[ifrom]-=1
             levels[ito]+=1
             istep+=1
@@ -121,7 +121,7 @@ class run_simbo:
         """
         distr = np.zeros(maxlev)
 
-        for i in range(0, nop):
+        for i in range(0, self.nop):
             if levels[i] <= maxlev-1:
                 distr[int(levels[i])] += 1
             else:
@@ -175,20 +175,20 @@ class run_simbo:
         for j in range(0, maxlev):
             U+=j*distr[j]
 
-        return(U/nop)
+        return(U/self.nop)
 
     def calc_Bolt_ent(self, distr):
         """
         Calculate Boltzmann entropy.
         """
-        num = np.math.factorial(nop)
+        num = np.math.factorial(self.nop)
         denom = 1
 
         for i in distr:
             denom*=np.math.factorial(i)
 
         W = num/denom
-        S_w = k_B * np.log(W)
+        S_w = np.log(W)
 
         return(W, S_w)
 
@@ -196,7 +196,7 @@ class run_simbo:
         """
         Calculate Boltzmann entropy for accumulated distribution (uses Stirling approximation for N!).
         """
-        num = nop*np.log(nop)-nop 
+        num = self.nop*np.log(self.nop)-self.nop 
         denom = 0
 
         for i in dist_sum:
@@ -204,7 +204,7 @@ class run_simbo:
                 denom+=(i*np.log(i)-i) 
 
         lnW=num-denom
-        S_a = k_B * lnW
+        S_a = lnW
 
         return(S_a)
 
@@ -216,7 +216,7 @@ class run_simbo:
         lnprdist = np.zeros(len(dist_sum))
 
         for i in range(len(dist_sum)):
-            prdist[i] = dist_sum[i]/nop
+            prdist[i] = dist_sum[i]/self.nop
             if prdist[i] != 0:
                lnprdist[i] = np.log(prdist[i])
             else:
@@ -241,12 +241,12 @@ class run_simbo:
         """
         Appends to stored data.
         """
-        all_uav.append(calc_Eav(maxlev, distr, nop))
-        W, S_w = calc_Bolt_ent(nop, distr)
+        all_uav.append(calc_Eav(maxlev, distr, self.nop))
+        W, S_w = calc_Bolt_ent(self.nop, distr)
         all_wbolt.append(W)
         all_sw.append(S_w)
-        all_sa.append(calc_av_ent(nop, dist_sum))
-        all_temp.append(calc_prob_temp(dist_sum, nop))
+        all_sa.append(calc_av_ent(self.nop, dist_sum))
+        all_temp.append(calc_prob_temp(dist_sum, self.nop))
 
         return(all_uav, all_wbolt, all_sw, all_sa, all_temp)
 
@@ -258,8 +258,8 @@ class run_simbo:
             zero_array.append(0.05)
 
         all_dist_sum.append(zero_array)
-        all_uav.append(calc_Eav(maxlev, distr, nop))
-        W, S_w = calc_Bolt_ent(nop, distr)
+        all_uav.append(calc_Eav(maxlev, distr, self.nop))
+        W, S_w = calc_Bolt_ent(self.nop, distr)
         all_wbolt.append(W)
         all_sw.append(S_w)
         all_sa.append('undefined')
@@ -271,27 +271,27 @@ class run_simbo:
         """
         Runs simulations after initialization.    
         """
-        while istep < nstot:
+        while istep < self.nstot:
     
             bef = istep
     
-            ifrom, ito = getrand(nop)
+            ifrom, ito = getrand(self.nop)
     
-            levels, istep = exchange(ifrom, ito, nop, levels, istep)
+            levels, istep = exchange(ifrom, ito, self.nop, levels, istep)
     
             if istep > bef: #exchange not possible sometimes (level[ifrom] = 0)
         
-                distr, all_levels, all_distr = recdist(nop, levels, maxlev, all_levels, all_distr)
+                distr, all_levels, all_distr = recdist(self.nop, levels, maxlev, all_levels, all_distr)
     
-                if istep > nseqv: #check if equilibrated
+                if istep > self.nseqv: #check if equilibrated
             
-                    idist, dist_sum, all_dist_sum, nstep = accum(nop, maxlev, idist, distr, dist_sum, nstep, all_dist_sum)
-                    all_uav, all_wbolt, all_sw, all_sa, all_temp = store_data(all_uav, maxlev, nop, distr, all_wbolt, all_sw, all_sa, dist_sum, all_temp)
+                    idist, dist_sum, all_dist_sum, nstep = accum(self.nop, maxlev, idist, distr, dist_sum, nstep, all_dist_sum)
+                    all_uav, all_wbolt, all_sw, all_sa, all_temp = store_data(all_uav, maxlev, self.nop, distr, all_wbolt, all_sw, all_sa, dist_sum, all_temp)
                     nstep+=1
             
                 else:
             
-                    all_dist_sum, all_uav, all_wbolt, all_sw, all_sa, all_temp = store_eq_data(zero_array, all_dist_sum, all_uav, maxlev, distr, nop, all_wbolt, all_sw, all_sa, all_temp)
+                    all_dist_sum, all_uav, all_wbolt, all_sw, all_sa, all_temp = store_eq_data(zero_array, all_dist_sum, all_uav, maxlev, distr, self.nop, all_wbolt, all_sw, all_sa, all_temp)
 
         return(dist_sum, all_levels, all_distr, all_uav, all_wbolt, all_sw, all_sa, all_temp)
 
@@ -305,10 +305,10 @@ class run_simbo:
             plt.rcParams.update({'font.size': 10})
             ax1.cla()
 
-	    labels1 = np.arange(1, nop+1, 1)
+	    labels1 = np.arange(1, self.nop+1, 1)
 	    trimmed_dist1 = all_levels[i]
 
-	    xrange_ = np.arange(0, nop+1, find_skips(nop+1))
+	    xrange_ = np.arange(0, self.nop+1, find_skips(self.nop+1))
 	    xticks = xrange_[1:]
 	    xticks = [1, *xticks]
 	    ax1.set_xticks(xticks)
@@ -352,8 +352,8 @@ class run_simbo:
 	    ax3.text(xv, yv*(2/9), 'Accum. distribution', fontweight='bold')
             
             if units == 'default':
-	        ax3.text(xv, yv*(8/9), 'Average energy: %.4fe-21 J'%((all_uav[i])*h*c*nu*1e21))
-	        ax3.text(xv, yv*(3/9), 'Boltzmann entropy: \n %.4fe-21 J/K' %(all_sw[i]*1e21))
+	        ax3.text(xv, yv*(8/9), 'Average energy: %.4fe-21 J'%((all_uav[i])*self.h*self.c*self.nu*1e21))
+	        ax3.text(xv, yv*(3/9), 'Boltzmann entropy: \n %.4fe-21 J/K' %(all_sw[i]**self.k_B*1e21))
             else:
 	        ax3.text(xv, yv*(8/9), 'Average energy: %.4f red. un.'%(all_uav[i]))
 	        ax3.text(xv, yv*(3/9), 'Boltzmann entropy: \n %.4f red. un.' %(all_sw[i]))
@@ -362,8 +362,8 @@ class run_simbo:
 	       ax3.set_title(f'Accum. distribution \n accum. steps = {i-nseqv}')
 
                if units == 'default':
-		     ax3.text(xv, yv*(1/9), 'Average entropy: %.4fe-21 J/K' %(all_sa[i]*1e21))
-		     ax3.text(xv, 0, 'Temperature: %.0f K' %(all_temp[i]*((h*c*nu)/k_B)))
+		     ax3.text(xv, yv*(1/9), 'Average entropy: %.4fe-21 J/K' %(all_sa[i]*self.k_B*1e21))
+		     ax3.text(xv, 0, 'Temperature: %.0f K' %(all_temp[i]*((self.h*self.c*self.nu)/self.k_B)))
                else:
 		     ax3.text(xv, yv*(1/9), 'Average entropy: %.4f red. un.' %(all_sa[i]))
 		     ax3.text(xv, 0, 'Temperature: %.4f red. un.' %(all_temp[i]))
