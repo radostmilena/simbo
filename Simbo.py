@@ -138,21 +138,16 @@ def calc_av_ent(nop, dist_sum):
 def find_max(all_levels, all_distr, all_dist_sum):
 
     max_levels = []
-    for levels in all_levels:
-        max_levels.append(max(levels))
-
-    max_level = max(max_levels)
-
     max_distr = []
-    for distr in all_distr:
-        max_distr.append(max(distr))
-
-    max_dist = max(max_distr)
-
     max_dist_sum = []
-    for dist_sum in all_dist_sum:
+
+    for levels, distr, dist_sum in zip(all_levels, all_distr, all_dist_sum):
+        max_levels.append(max(levels))
+        max_distr.append(max(distr))
         max_dist_sum.append(max(dist_sum))
 
+    max_level = max(max_levels)
+    max_dist = max(max_distr)
     max_distr_sum = max(max_dist_sum)
 
     return(max_level, max_dist, max_distr_sum)
