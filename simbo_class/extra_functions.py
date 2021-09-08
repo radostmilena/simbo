@@ -12,8 +12,17 @@ plt.rcParams.update({'font.size': 6.5})
 #auxiliary functions
 class extra_functions(run_simbo): #inherits objects and methods from run_simbo
   
-    def __init__(self):
-	super(extra_functions, self).__init__()     
+    def __init__(self, en, nop, nu):
+        super(extra_functions, self).__init__(en, nop, nu)     
+
+    def find_skips(self, maximum):
+        run_simbo.find_skips(self, maximum)
+
+    def generate_levels(self):
+        run_simbo.generate_levels(self)
+
+    def calc_Bolt_ent(self, levels):
+        run_simbo.calc_Bolt_ent(self, levels)
 
     def plot_prob_temp(self, dist_sum, max_level):
         """
@@ -42,10 +51,10 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         else:
             temp = np.nan
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12,4))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8,3))
 
         x1 = np.arange(0, len(dist_sum), 1)
-        xticks = np.arange(0, max_level+1, find_skips(max_level))
+        xticks = np.arange(0, max_level+1, self.find_skips(max_level))
         x2 = np.arange(0, len(dist_sum), 0.1)
         ax1.bar(x1, prdist, color='b')
         ax1.set_xticks(xticks)
@@ -62,22 +71,44 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         ax2.set_ylabel('ln($\\rho (n)$)')
         ax2.plot(x, yy, '--', color='gray')
 
+        plt.tight_layout()
+
     def print_w_sw(self, all_wbolt, all_sw, start, end, units):
         """
         Prints W and S_w for selected interval and units.  
         """
-	for i, x, y in zip(np.arange(len(all_wbolt[start:end])), all_wbolt[start:end], all_sw[start:end]):
+        for i, x, y in zip(np.arange(len(all_wbolt[start:end])), all_wbolt[start:end], all_sw[start:end]):
             if units == 'default':
-	       print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4fe-21 J/K' %(y*self.k_B*1e21))
+               print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4fe-21 J/K' %(y*self.k_B*1e21))
             else:
-	       print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4f red. un.' %(y))
+               print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4f red. un.' %(y))
 
-    def get_w_sw(en, nop, units):# en and nop not belonging to class!!!
+    def get_w_sw(self, en, nop, units):# en and nop not belonging to class!!!
         """
         Allows user to play around with W and S_w.      .  
         """
-        levels = generate_levels(en, nop)
-        W, S_w = calc_Bolt_ent(nop, levels)
+        levels = np.zeros(nop)
+
+        for i in range(0, nop, 1):
+            levels[i] = int(rd.random()*en*2+0.5)
+
+        maxlev = int(max(levels))+1
+        distr = np.zeros(maxlev)
+
+        for i in range(0, nop):
+            if levels[i] <= maxlev-1:
+                distr[int(levels[i])] += 1
+            else:
+                print('error')
+
+        num = np.math.factorial(nop)
+        denom = 1
+
+        for i in distr:
+            denom*=np.math.factorial(i)
+
+        W = num/denom
+        S_w = np.log(W)
 
         plt.rcParams['figure.figsize'] = [4, 3]
 
@@ -85,11 +116,11 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         labels1 = np.arange(1, nop+1, 1)
         trimmed_dist1 = levels
 
-        xrange_ = np.arange(0, nop+1, find_skips(nop+1))
+        xrange_ = np.arange(0, nop+1, self.find_skips(nop+1))
         xticks = xrange_[1:]
         xticks = [1, *xticks]
         plt.xticks(xticks)
-        plt.yticks(np.arange(0, max_level+1, find_skips(max_level)))
+        plt.yticks(np.arange(0, max_level+1, self.find_skips(max_level)))
         plt.xlabel('molecule')
         plt.ylabel('energy')
         plt.ylim(-0.2, max_level+1-0.6)
@@ -99,7 +130,6 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         plt.show()
 
         if units == 'default':
-	    print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4fe-21 J/K' %(S_w*self.k_B*1e21))
+            print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4fe-21 J/K' %(S_w*self.k_B*1e21))
         else:
-	    print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4f red. un.' %(S_w))
-
+            print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4f red. un.' %(S_w))
