@@ -21,7 +21,6 @@ class run_simbo:
         self.h = constants.value(u'Planck constant')
         self.c = constants.value(u'speed of light in vacuum')
 
-        self.nstot = self.nop*40
         self.nseqv = self.nop*20 
 
     #helpful functions
@@ -66,7 +65,7 @@ class run_simbo:
         levels = np.zeros(self.nop)
 
         for i in range(0, self.nop, 1):
-            levels[i] = int(rd.random()*self.en*2+0.5)
+            levels[i] = int(rd.uniform(0.0, 1.0)*self.en*2+0.5)
     
         return(levels)
 
@@ -96,11 +95,11 @@ class run_simbo:
         """
         Get random molecules.
         """
-        ito = int(np.ceil(rd.random()*self.nop-1))
-        ifrom = int(np.ceil(rd.random()*self.nop-1))
+        ito = rd.randint(0, self.nop-1)
+        ifrom = rd.randint(0, self.nop-1)
 
         while (ito == ifrom):
-            ito = int(np.ceil(rd.random()*self.nop-1))
+            ito = rd.randint(0, self.nop-1)
 
         return(ifrom, ito)
 
@@ -108,9 +107,11 @@ class run_simbo:
         """
         Exchange energy between levels.
         """
-        if (ito >= 0 and ito < self.nop) and (ifrom >= 0 and ifrom < self.nop) and levels[ifrom] > 0:
-            levels[ifrom]-=1
-            levels[ito]+=1
+        if levels[ifrom] > 0:
+
+            quantum = rd.randint(1, levels[ifrom])
+            levels[ifrom]-=quantum
+            levels[ito]+=quantum
             istep+=1
 
         return(levels, istep)
@@ -136,7 +137,7 @@ class run_simbo:
         for i in range(0, maxlev):
             idist[i] = distr[i]+idist[i]
             if nstep != 0:
-                dist_sum[i] = idist[i]/nstep
+                dist_sum[i] = idist[i]/(nstep+1)
             else:
                 dist_sum[i] = idist[i]
 
@@ -250,13 +251,15 @@ class run_simbo:
 
         return(all_levels, all_distr, all_uav, all_wbolt, all_sw, all_sa, all_temp)
 
-    def run(self, levels):
+    def run(self, levels, nstot):
         """
         Runs simulations after initialization.    
         """
+        nstot = self.nseqv + nstot
+
         maxlev, idist, dist_sum, nstep, istep, all_levels, all_distr, all_dist_sum, all_uav, all_wbolt, all_sw, all_sa, all_temp, zero_array = self.setzero(levels)
 
-        while istep < self.nstot:
+        while istep < nstot:
     
             bef = istep
     

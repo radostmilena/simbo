@@ -61,12 +61,14 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         ax1.set_xlabel('energy level')
         ax1.set_ylabel('$\\rho (n)$')
         ax1.set_xlim(-0.8, max_level+1-0.2)
+        ax1.set_ylim(-min(prdist)*0.1, max(prdist)*2)
         q = np.sum(np.exp(-(x1)/temp))
         bd = np.exp(-(x2)/temp)/q
         ax1.plot(x2, bd, color='k')
 
         ax2.scatter(x, y, color='b')
         ax2.set_xticks(x)
+        ax2.set_ylim(min(lnprdist)-0.2, max(lnprdist)+0.2)
         ax2.set_xlabel('energy level')
         ax2.set_ylabel('ln($\\rho (n)$)')
         ax2.plot(x, yy, '--', color='gray')
