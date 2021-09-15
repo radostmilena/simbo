@@ -91,27 +91,43 @@ class run_simbo:
         return(maxlev, idist, dist_sum, nstep, istep, all_levels, all_distr, all_dist_sum, all_uav, all_wbolt, all_sw, all_sa, all_temp, zero_array)
 
     #functions for running simulation
-    def getrand(self):
+    def getrand(self, levels):
         """
         Get random molecules.
         """
-        ito = rd.randint(0, self.nop-1)
-        ifrom = rd.randint(0, self.nop-1)
+        #get ifrom
+        Etot = sum(levels)
+        ien = int(np.ceil(rd.random()*Etot))
+        ifrom = 0
+        iq = levels[ifrom]
+
+        while iq < ien and ifrom < self.nop-1:
+            ifrom+=1
+            iq+=levels[ifrom]
+
+        #get nr of quanta
+        itr = iq-ien+1
+
+        #get ito
+        ito = ifrom
 
         while (ito == ifrom):
             ito = rd.randint(0, self.nop-1)
 
-        return(ifrom, ito)
+        return(ifrom, ito, itr)
 
-    def exchange(self, ifrom, ito, levels, istep):
+    def exchange(self, ifrom, ito, itr, levels, istep):
         """
         Exchange energy between levels.
         """
         if levels[ifrom] > 0:
 
-            quantum = rd.randint(1, levels[ifrom])
-            levels[ifrom]-=quantum
-            levels[ito]+=quantum
+            levels[ifrom]-=itr
+            levels[ito]+=itr
+            istep+=1
+
+        else:
+
             istep+=1
 
         return(levels, istep)
@@ -261,21 +277,17 @@ class run_simbo:
 
         while istep < nstot:
     
-            bef = istep
+            ifrom, ito, itr = self.getrand(levels)
     
-            ifrom, ito = self.getrand()
+            levels, istep = self.exchange(ifrom, ito, itr, levels, istep)
     
-            levels, istep = self.exchange(ifrom, ito, levels, istep)
+            distr = self.recdist(levels, maxlev)
     
-            if istep > bef: #exchange not possible sometimes (level[ifrom] = 0)
-        
-                distr = self.recdist(levels, maxlev)
-    
-                if istep > self.nseqv: #check if equilibrated
+            if istep > self.nseqv: #check if equilibrated
             
-                    idist, dist_sum, all_dist_sum, nstep = self.accum(maxlev, idist, distr, dist_sum, nstep, all_dist_sum)
-                    all_levels, all_distr, all_uav, all_wbolt, all_sw, all_sa, all_temp = self.store_data(levels, all_levels, all_distr, all_uav, maxlev, distr, all_wbolt, all_sw, all_sa, dist_sum, all_temp)
-                    nstep+=1
+                idist, dist_sum, all_dist_sum, nstep = self.accum(maxlev, idist, distr, dist_sum, nstep, all_dist_sum)
+                all_levels, all_distr, all_uav, all_wbolt, all_sw, all_sa, all_temp = self.store_data(levels, all_levels, all_distr, all_uav, maxlev, distr, all_wbolt, all_sw, all_sa, dist_sum, all_temp)
+                nstep+=1
 
         max_level, max_dist, max_distr_sum = self.find_max(all_levels, all_distr, all_dist_sum)
             
