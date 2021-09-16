@@ -38,6 +38,9 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
             else:
                 lnprdist[i] = 0
 
+        last_levels = prdist[prdist < 0.005]
+        max_level = int((len(prdist)-1)-(len(last_levels)-1))
+
         y = lnprdist[lnprdist != 0]
 
         x = np.arange(0, len(y))
@@ -61,14 +64,15 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         ax1.set_xlabel('energy level')
         ax1.set_ylabel('$\\rho (n)$')
         ax1.set_xlim(-0.8, max_level+1-0.2)
-        ax1.set_ylim(-min(prdist)*0.1, max(prdist)*2)
+        ax1.set_ylim(-min(prdist)*0.1, max(prdist)+max(prdist)*0.5)
         q = np.sum(np.exp(-(x1)/temp))
         bd = np.exp(-(x2)/temp)/q
-        ax1.plot(x2, bd, color='k')
+        ax1.plot(x2, bd, color='k', label='Boltzmann distribution')
+        ax1.legend()
 
         ax2.scatter(x, y, color='b')
         ax2.set_xticks(x)
-        ax2.set_ylim(min(lnprdist)-0.2, max(lnprdist)+0.2)
+        ax2.set_ylim(min(lnprdist)+min(lnprdist)*0.2, max(lnprdist)-max(lnprdist)*0.2)
         ax2.set_xlabel('energy level')
         ax2.set_ylabel('ln($\\rho (n)$)')
         ax2.plot(x, yy, '--', color='gray')

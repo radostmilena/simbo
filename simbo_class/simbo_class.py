@@ -15,7 +15,7 @@ class run_simbo:
 
         self.en = en
         self.nop = nop
-        self.nu = nu
+        self.nu = nu*1e2
 
         self.k_B = constants.value(u'Boltzmann constant')
         self.h = constants.value(u'Planck constant')
