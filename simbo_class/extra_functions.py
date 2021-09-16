@@ -16,7 +16,18 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         super(extra_functions, self).__init__(en, nop, nu)     
 
     def find_skips(self, maximum):
-        run_simbo.find_skips(self, maximum)
+        """
+        Finds spacing for optimal axis labels.
+        """
+        skips = [1, 2, 5]
+        if maximum >= 15 and maximum <= 25:
+            skip = skips[1]
+        elif maximum > 25:
+            skip = skips[2]
+        else:
+            skip = skips[0]
+
+        return(skip)
 
     def generate_levels(self):
         run_simbo.generate_levels(self)
@@ -57,13 +68,13 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8,3))
 
         x1 = np.arange(0, len(dist_sum), 1)
-        xticks = np.arange(0, max_level+1, self.find_skips(max_level))
-        x2 = np.arange(0, len(dist_sum), 0.1)
+        xticks = np.arange(0, max_level, self.find_skips(max_level))
+        x2 = np.arange(0, len(dist_sum)-0.9, 0.1)
         ax1.bar(x1, prdist, color='b')
         ax1.set_xticks(xticks)
         ax1.set_xlabel('energy level')
         ax1.set_ylabel('$\\rho (n)$')
-        ax1.set_xlim(-0.8, max_level+1-0.2)
+        ax1.set_xlim(-0.8, max_level-0.2)
         ax1.set_ylim(-min(prdist)*0.1, max(prdist)+max(prdist)*0.5)
         q = np.sum(np.exp(-(x1)/temp))
         bd = np.exp(-(x2)/temp)/q
@@ -71,8 +82,10 @@ class extra_functions(run_simbo): #inherits objects and methods from run_simbo
         ax1.legend()
 
         ax2.scatter(x, y, color='b')
-        ax2.set_xticks(x)
+        xticks1 = np.arange(0, len(y), self.find_skips(len(y)))
+        ax2.set_xticks(xticks1)
         ax2.set_ylim(min(lnprdist)+min(lnprdist)*0.2, max(lnprdist)-max(lnprdist)*0.2)
+        ax2.text(0, min(lnprdist)-min(lnprdist)*0.1, 'T = %.2f red. un. \n T = %.1f K' %(temp, temp*((self.h*self.c*self.nu)/self.k_B))) 
         ax2.set_xlabel('energy level')
         ax2.set_ylabel('ln($\\rho (n)$)')
         ax2.plot(x, yy, '--', color='gray')
