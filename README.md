@@ -1,1 +1,1 @@
-Jupyter Notebook and module for Boltzmann lab.
+Jupyter Notebook and code for Boltzmann lab.
