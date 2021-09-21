@@ -10,7 +10,7 @@ from simbo_class import run_simbo
 plt.rcParams.update({'font.size': 6.5})
 
 #auxiliary functions
-class extra_functions(run_simbo): #inherits objects and methods from run_simbo
+class extra_functions(run_simbo): #inherits objects and some methods from run_simbo
   
     def __init__(self, en, nop, nu):
         super(extra_functions, self).__init__(en, nop, nu)     
