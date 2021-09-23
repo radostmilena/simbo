@@ -20,6 +20,7 @@ class run_simbo:
         self.k_B = constants.value(u'Boltzmann constant')
         self.h = constants.value(u'Planck constant')
         self.c = constants.value(u'speed of light in vacuum')
+        self.N_A = constants.value(u'Avogadro constant')
 
         self.nseqv = self.nop*20 
 
@@ -353,16 +354,16 @@ class run_simbo:
             yv = max_distr_sum+1
         
             ax3.text(xv, yv*(7/9), 'Current distribution', fontweight='bold')
-            ax3.text(xv, yv*(5/9), 'Statistical weight: \n %.1f' %(all_wbolt[i]))
+            ax3.text(xv, yv*(5/9), 'Statistical weight: \n %.2E' %(all_wbolt[i]))
             ax3.text(xv, yv*(2/9), 'Accum. distribution', fontweight='bold')
             
             ax3.set_title(f'Accum. distribution \n accum. steps = {i}')
 
             if units == 'default':
-                ax3.text(xv, yv*(1/9), 'Average entropy: %.4fe-21 J/K' %(all_sa[i]*self.k_B*1e21))
+                ax3.text(xv, yv*(1/9), 'Average entropy: %.2f kJ/mol K' %(all_sa[i]*self.k_B*self.N_A))
                 ax3.text(xv, 0, 'Temperature: %.1f K' %(all_temp[i]*((self.h*self.c*self.nu)/self.k_B)))
-                ax3.text(xv, yv*(8/9), 'Average energy: %.4fe-21 J'%((all_uav[i])*self.h*self.c*self.nu*1e21))
-                ax3.text(xv, yv*(3/9), 'Boltzmann entropy: \n %.4fe-21 J/K' %(all_sw[i]*self.k_B*1e21))
+                ax3.text(xv, yv*(8/9), 'Average energy: %.2f kJ/mol'%((all_uav[i])*self.h*self.c*self.nu*self.N_A))
+                ax3.text(xv, yv*(3/9), 'Boltzmann entropy: \n %.2f kJ/mol K' %(all_sw[i]*self.k_B*self.N_A))
             else:
                 ax3.text(xv, yv*(1/9), 'Average entropy: %.4f red. un.' %(all_sa[i]))
                 ax3.text(xv, 0, 'Temperature: %.4f red. un.' %(all_temp[i]))

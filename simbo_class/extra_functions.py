@@ -98,9 +98,9 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
         """
         for i, x, y in zip(np.arange(len(all_wbolt[start:end])), all_wbolt[start:end], all_sw[start:end]):
             if units == 'default':
-               print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4fe-21 J/K' %(y*self.k_B*1e21))
+               print('step %d\t' %(i), 'W = %.2E\t' %(x), 'S_w = %.2f kJ/mol K' %(y*self.k_B*self.N_A))
             else:
-               print('step %d\t' %(i), 'W = %6s\t' %(x), 'S_w = %.4f red. un.' %(y))
+               print('step %d\t' %(i), 'W = %.2E\t' %(x), 'S_w = %.4f red. un.' %(y))
 
     def get_w_sw(self, en, nop, units):# en and nop not belonging to class!!!
         """
@@ -149,6 +149,6 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
         plt.show()
 
         if units == 'default':
-            print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4fe-21 J/K' %(S_w*self.k_B*1e21))
+            print('Statistical weight: %.2E' %(W) + '    ' + 'Boltzmann entropy: %.2f J/mol K' %(S_w*self.k_B*self.N_A))
         else:
-            print('Statistical weight: %.0f' %(W) + '    ' + 'Boltzmann entropy: %.4f red. un.' %(S_w))
+            print('Statistical weight: %.2E' %(W) + '    ' + 'Boltzmann entropy: %.4f red. un.' %(S_w))
