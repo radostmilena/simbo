@@ -330,10 +330,10 @@ class run_simbo:
             labels2 = np.arange(0, len(all_distr[i]), 1)
             trimmed_dist2 = all_distr[i]
             ax2.set_xticks(np.arange(0, max_level+1, self.find_skips(max_level)))
-            ax2.set_yticks(np.arange(0, max_dist+1, self.find_skips(max_dist)))
             ax2.set_ylabel('nr. of molecules')
             ax2.set_xlabel('energy level')
-            ax2.set_ylim(-0.2, max_dist+1-0.2)
+            ax2.set_yticks(np.arange(0, self.nop+1, self.find_skips(self.nop+1)))
+            ax2.set_ylim(-0.2, self.nop+1-0.6)
             ax2.set_xlim(-0.8, max_level+1-0.2)
             ax2.bar(x=labels2, height=trimmed_dist2, color='b')
             ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
@@ -343,7 +343,6 @@ class run_simbo:
             labels3 = np.arange(0, len(all_dist_sum[i]), 1)
             trimmed_dist3 = all_dist_sum[i]
             ax3.set_xticks(np.arange(0, max_level+1, self.find_skips(max_level)))
-            ax2.set_yticks(np.arange(0, max_distr_sum, self.find_skips(max_distr_sum)))
             ax3.set_ylabel('average nr. of molecules')
             ax3.set_xlabel('energy level')
             ax3.set_ylim(-0.2, max_distr_sum+1-0.2)
