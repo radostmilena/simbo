@@ -300,7 +300,7 @@ class run_simbo:
         """
         max_level, max_dist, max_distr_sum = self.find_max(all_levels, all_distr, all_dist_sum)
 
-        fig = plt.figure(constrained_layout=True, figsize=(8, 6))
+        fig = plt.figure(constrained_layout=False, figsize=(12, 8))
         gs = fig.add_gridspec(2, 4)
         gs.update(wspace=0.5)
         ax1 = fig.add_subplot(gs[0, :2], )
@@ -308,7 +308,7 @@ class run_simbo:
         ax3 = fig.add_subplot(gs[1, 1:3])
 
         def animation_frame(i):
-            plt.rcParams.update({'font.size': 10})
+            plt.rcParams.update({'font.size': 14})
             ax1.cla()
 
             labels1 = np.arange(1, self.nop+1, 1)
@@ -324,6 +324,7 @@ class run_simbo:
             ax1.set_ylim(-0.2, max_level+1-0.6)
             ax1.bar(x=labels1, height=trimmed_dist1, color='b')
             ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
+            ax1.set_position([0.1, 0.59, 0.36, 0.34])
 
             ax2.cla()
 
@@ -337,6 +338,7 @@ class run_simbo:
             ax2.set_xlim(-0.8, max_level+1-0.2)
             ax2.bar(x=labels2, height=trimmed_dist2, color='b')
             ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
+            ax2.set_position([0.55, 0.59, 0.36, 0.34])
 
             ax3.cla()
 
@@ -348,6 +350,7 @@ class run_simbo:
             ax3.set_ylim(-0.2, max_distr_sum+1-0.2)
             ax3.set_xlim(-0.8, max_level+1-0.2)
             ax3.bar(x=labels3, height=trimmed_dist3, color='b')
+            ax3.set_position([0.20, 0.09, 0.36, 0.34])
     
             xv = (max_level+1)*1.1
             yv = max_distr_sum+1
@@ -373,3 +376,125 @@ class run_simbo:
 
         return(fig, animation_frame, frames_no)
 
+    def run_eq(self, levels, nstot):
+        """
+        Runs only equilibration after initialization.    
+        """
+        nstot = self.nseqv + nstot
+
+        maxlev, idist, dist_sum, nstep, istep, all_levels, all_distr, all_dist_sum, all_uav, all_wbolt, all_sw, all_sa, all_temp, zero_array = self.setzero(levels)
+
+        while istep < nstot:
+
+            ifrom, ito, itr = self.getrand(levels)
+
+            levels, istep = self.exchange(ifrom, ito, itr, levels, istep)
+
+            distr = self.recdist(levels, maxlev)
+
+            W, S_w = self.calc_Bolt_ent(distr)
+            all_wbolt.append(W)
+            all_sw.append(S_w)
+
+        return(all_wbolt, all_sw)
+
+    def plot_frames(self, all_levels, all_distr, all_dist_sum, all_uav, all_wbolt, all_sw, all_sa, all_temp, units, frames):
+        """
+        Plots the first <frames> steps plus final step from simulation run in same way as animation.
+        """
+        steps = np.arange(0, frames+1, 1)
+        steps[-1] = -1
+
+        for i in steps:
+
+            max_level = np.amax(all_levels)
+            max_distr_sum = np.amax(all_dist_sum)
+
+            fig = plt.figure(constrained_layout=False, figsize=(15, 10.5))
+            gs = fig.add_gridspec(3, 6)
+            gs.update(wspace=0.5)
+            ax1 = fig.add_subplot(gs[0, :3], )
+            ax2 = fig.add_subplot(gs[0, 3:])
+            ax3 = fig.add_subplot(gs[1, 1:4])
+            
+            plt.rcParams.update({'font.size': 14})
+            
+            labels1 = np.arange(1, self.nop+1, 1)
+            trimmed_dist1 = all_levels[i]
+            
+            plt.rc('axes', labelsize=14)
+            xrange_ = np.arange(0, self.nop+1, self.find_skips(self.nop+1))
+            xticks = xrange_[1:]
+            xticks = [1, *xticks]
+            ax1.set_xticks(xticks)
+            ax1.set_yticks(np.arange(0, max_level+1, self.find_skips(max_level)))
+            ax1.set_xlabel('molecule')
+            ax1.set_ylabel('energy')
+            ax1.set_ylim(-0.2, max_level+1-0.6)
+            ax1.bar(x=labels1, height=trimmed_dist1, color='b')
+            ax1.set_position([0.1, 0.55, 0.37, 0.33])
+            
+            ax2.cla()
+            
+            labels2 = np.arange(0, len(all_distr[i]), 1)
+            trimmed_dist2 = all_distr[i]
+            ax2.set_xticks(np.arange(0, max_level+1, self.find_skips(max_level)))
+            ax2.set_ylabel('nr. of molecules')
+            ax2.set_xlabel('energy level')
+            ax2.set_yticks(np.arange(0, self.nop+1, 1))
+            ax2.set_ylim(-0.2, self.nop+1-0.6)
+            ax2.set_xlim(-0.8, max_level+1-0.2)
+            ax2.bar(x=labels2, height=trimmed_dist2, color='b')
+            ax2.set_position([0.55, 0.55, 0.37, 0.33])
+            
+            ax3.cla()
+            
+            labels3 = np.arange(0, len(all_dist_sum[i]), 1)
+            trimmed_dist3 = all_dist_sum[i]
+            ax3.set_xticks(np.arange(0, max_level+1, self.find_skips(max_level)))
+            ax3.set_ylabel('average nr. of molecules')
+            ax3.set_xlabel('energy level')
+            ax3.set_ylim(-0.2, max_distr_sum+1-0.2)
+            ax3.set_xlim(-0.8, max_level+1-0.2)
+            ax3.bar(x=labels3, height=trimmed_dist3, color='b')
+            ax3.set_position([0.25, 0.1, 0.37, 0.33])
+            
+            xv = (max_level+1)*1.1
+            yv = max_distr_sum+1
+            
+            plt.rc('font', size=15)
+            ax3.text(xv, yv*(7/9), 'Current distribution', fontweight='bold')
+            ax3.text(xv, yv*(5/9), 'Statistical weight: \n %.2E' %(all_wbolt[i]))
+            ax3.text(xv, yv*(2/9), 'Accum. distribution', fontweight='bold')
+            
+            if units == 'default':
+
+               ax3.text(xv, yv*(1/9), 'Average entropy: %.2f kJ/mol K' %(all_sa[i]*self.k_B*self.N_A))
+               ax3.text(xv, 0, 'Temperature: %.1f K' %(all_temp[i]*((self.h*self.c*self.nu)/self.k_B)))
+               ax3.text(xv, yv*(8/9), 'Average energy: %.2f kJ/mol'%((all_uav[i])*self.h*self.c*self.nu*self.N_A))
+               ax3.text(xv, yv*(3/9), 'Boltzmann entropy: \n %.2f kJ/mol K' %(all_sw[i]*self.k_B*self.N_A))
+
+            else:
+
+               ax3.text(xv, yv*(1/9), 'Average entropy: %.4f red. un.' %(all_sa[i]))
+               ax3.text(xv, 0, 'Temperature: %.4f red. un.' %(all_temp[i]))
+               ax3.text(xv, yv*(8/9), 'Average energy: %.4f red. un.'%(all_uav[i]))
+               ax3.text(xv, yv*(3/9), 'Boltzmann entropy: \n %.4f red. un.' %(all_sw[i]))
+            
+            if i >= 0:
+
+               ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
+               ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
+               ax3.set_title(f'Accum. distribution \n accum. steps = {i}')
+
+               plt.savefig('step_%s.png' %(i))
+
+            else:
+
+               ax1.set_title(f'Energy levels \n step = {self.nop*200+self.nseqv-1}')
+               ax2.set_title(f'Distribution of levels \n step = {self.nop*200+self.nseqv-1}')
+               ax3.set_title(f'Accum. distribution \n accum. steps = {self.nop*200-1}')
+
+               plt.savefig('final_step.png')
+
+            plt.close()

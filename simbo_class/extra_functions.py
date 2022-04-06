@@ -41,7 +41,6 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
         """
         prdist = np.zeros(len(dist_sum))
         lnprdist = np.zeros(len(dist_sum))
-
         for i in range(len(dist_sum)):
             prdist[i] = dist_sum[i]/self.nop
             if prdist[i] != 0:
@@ -57,7 +56,7 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
         x = np.arange(0, len(y))
         M = x[:, np.newaxis]**[0, 1]
         p, res, rnk, s = lstsq(M, y)
-        yy = p[0] + p[1]*x
+        yy = p[0]+p[1]*x
         if p[1] > 0:
             temp = 1/p[1]
         elif p[1] < 0:
@@ -65,30 +64,38 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
         else:
             temp = np.nan
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8,3))
+        stderr = res*np.sqrt(1/len(lnprdist))*(1/np.sqrt(len(lnprdist)-1))
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+        plt.rcParams.update({'font.size': 12})
 
         x1 = np.arange(0, len(dist_sum), 1)
         xticks = np.arange(0, max_level, self.find_skips(max_level))
         x2 = np.arange(0, len(dist_sum)-0.9, 0.1)
-        ax1.bar(x1, prdist, color='b')
-        ax1.set_xticks(xticks)
-        ax1.set_xlabel('energy level')
-        ax1.set_ylabel('$\\rho (n)$')
-        ax1.set_xlim(-0.8, max_level-0.2)
-        ax1.set_ylim(-min(prdist)*0.1, max(prdist)+max(prdist)*0.5)
-        q = np.sum(np.exp(-(x1)/temp))
-        bd = np.exp(-(x2)/temp)/q
-        ax1.plot(x2, bd, color='k', label='Boltzmann distribution')
-        ax1.legend()
-
-        ax2.scatter(x, y, color='b')
-        xticks1 = np.arange(0, len(y), self.find_skips(len(y)))
-        ax2.set_xticks(xticks1)
-        ax2.set_ylim(min(lnprdist)+min(lnprdist)*0.2, max(lnprdist)-max(lnprdist)*0.2)
-        ax2.text(0, min(lnprdist)-min(lnprdist)*0.1, 'T = %.2f red. un. \n T = %.1f K' %(temp, temp*((self.h*self.c*self.nu)/self.k_B))) 
+        ax2.bar(x1, prdist, color='b')
+        ax2.set_xticks(xticks)
         ax2.set_xlabel('energy level')
-        ax2.set_ylabel('ln($\\rho (n)$)')
-        ax2.plot(x, yy, '--', color='gray')
+        ax2.set_ylabel('$\\rho (n)$')
+        ax2.set_xlim(-0.8, max_level-0.2)
+        ax2.set_ylim(-min(prdist)*0.1, max(prdist)+max(prdist)*0.5)
+        if np.isnan(temp) == False:
+            q = np.sum(np.exp(-(x1)/temp))
+            bd = np.exp(-(x2)/temp)/q
+
+        else:
+            bd = x2*0 + 1/max_level 
+
+        ax2.plot(x2, bd, color='k', label='Fitted distribution')
+        ax2.legend()
+
+        ax1.scatter(x, y, color='b')
+        xticks1 = np.arange(0, len(y), self.find_skips(len(y)))
+        ax1.set_xticks(xticks1)
+        ax1.set_ylim(min(lnprdist)+min(lnprdist)*0.2, max(lnprdist)-max(lnprdist)*0.2)
+        ax1.text(0, min(lnprdist)-min(lnprdist)*0.1, 'T = %.2f ± %.2f red. un. \n T = %.1f ± %.1f K' %(temp, stderr, temp*((self.h*self.c*self.nu)/self.k_B), stderr*((self.h*self.c*self.nu)/self.k_B))) 
+        ax1.set_xlabel('energy level')
+        ax1.set_ylabel('ln($\\rho (n)$)')
+        ax1.plot(x, yy, '--', color='gray')
 
         plt.tight_layout()
 
@@ -129,7 +136,7 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
         W = num/denom
         S_w = np.log(W)
 
-        plt.rcParams['figure.figsize'] = [4, 3]
+        plt.rcParams['figure.figsize'] = [6, 4.5]
 
         max_level = max(levels)+3
         labels1 = np.arange(1, nop+1, 1)
@@ -152,3 +159,19 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
             print('Statistical weight: %.2E' %(W) + '    ' + 'Boltzmann entropy: %.2f J/mol K' %(S_w*self.k_B*self.N_A))
         else:
             print('Statistical weight: %.2E' %(W) + '    ' + 'Boltzmann entropy: %.4f red. un.' %(S_w))
+
+    def plot_eq(self, all_wbolt, all_sw):
+        
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+        x = np.arange(len(all_wbolt))
+        all_wbolt = np.array(all_wbolt)
+        ax1.plot(x, all_wbolt*1e-4, color='darkblue')
+        ax1.set_xlabel('step')
+        ax1.set_ylabel(r'$W \; \; / \; \; 10^4$')
+        all_sw = np.array(all_sw)
+        ax2.plot(x, all_sw*self.k_B*self.N_A)
+        ax2.set_xlabel('step')
+        ax2.set_ylabel(r'$S \; \; / \; \; \mathrm{kJ \cdot {mol}^{-1} \cdot K^{-1}}$')
+        plt.tight_layout()
+        plt.show()
