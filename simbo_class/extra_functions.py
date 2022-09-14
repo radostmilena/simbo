@@ -66,7 +66,7 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
 
         stderr = res*np.sqrt(1/len(lnprdist))*(1/np.sqrt(len(lnprdist)-1))
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
         plt.rcParams.update({'font.size': 12})
 
         x1 = np.arange(0, len(dist_sum), 1)
@@ -162,7 +162,7 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
 
     def plot_eq(self, all_wbolt, all_sw):
         
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
 
         x = np.arange(len(all_wbolt))
         all_wbolt = np.array(all_wbolt)

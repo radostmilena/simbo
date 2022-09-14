@@ -145,7 +145,7 @@ class run_simbo:
             else:
                 print('error')
     
-        return(distr)
+        return(distr.astype(int))
 
     def accum(self, maxlev, idist, distr, dist_sum, nstep, all_dist_sum):
         """
@@ -260,7 +260,7 @@ class run_simbo:
         all_distr.append(cum_distr)
 
         all_uav.append(self.calc_Eav(maxlev, distr))
-        W, S_w = self.calc_Bolt_ent(distr)
+        W, S_w =  self.calc_Bolt_ent(distr)
         all_wbolt.append(W)
         all_sw.append(S_w)
         all_sa.append(self.calc_av_ent(dist_sum))
@@ -300,7 +300,7 @@ class run_simbo:
         """
         max_level, max_dist, max_distr_sum = self.find_max(all_levels, all_distr, all_dist_sum)
 
-        fig = plt.figure(constrained_layout=False, figsize=(12, 8))
+        fig = plt.figure(constrained_layout=False, figsize=(9, 6))
         gs = fig.add_gridspec(2, 4)
         gs.update(wspace=0.5)
         ax1 = fig.add_subplot(gs[0, :2], )
@@ -308,12 +308,13 @@ class run_simbo:
         ax3 = fig.add_subplot(gs[1, 1:3])
 
         def animation_frame(i):
-            plt.rcParams.update({'font.size': 14})
+            plt.rcParams.update({'font.size': 11})
             ax1.cla()
 
             labels1 = np.arange(1, self.nop+1, 1)
             trimmed_dist1 = all_levels[i]
 
+            plt.rc('axes', labelsize=11)
             xrange_ = np.arange(0, self.nop+1, self.find_skips(self.nop+1))
             xticks = xrange_[1:]
             xticks = [1, *xticks]
@@ -324,7 +325,7 @@ class run_simbo:
             ax1.set_ylim(-0.2, max_level+1-0.6)
             ax1.bar(x=labels1, height=trimmed_dist1, color='b')
             ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
-            ax1.set_position([0.1, 0.59, 0.36, 0.34])
+            ax1.set_position([0.1, 0.585, 0.36, 0.34])
 
             ax2.cla()
 
@@ -338,7 +339,7 @@ class run_simbo:
             ax2.set_xlim(-0.8, max_level+1-0.2)
             ax2.bar(x=labels2, height=trimmed_dist2, color='b')
             ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
-            ax2.set_position([0.55, 0.59, 0.36, 0.34])
+            ax2.set_position([0.55, 0.585, 0.36, 0.34])
 
             ax3.cla()
 
@@ -486,8 +487,18 @@ class run_simbo:
                ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
                ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
                ax3.set_title(f'Accum. distribution \n accum. steps = {i}')
+               
+               if (sum(all_levels[-1])==2):
+                
+                    plt.savefig('task1_a/step_%s.png' %(i))
 
-               plt.savefig('step_%s.png' %(i))
+               elif (sum(all_levels[-1])==10) and (self.nop==2):
+                    
+                    plt.savefig('task1_b/step_%s.png' %(i))
+
+               else:
+
+                    plt.savefig('task2/step_%s.png' %(i))
 
             else:
 
@@ -495,6 +506,16 @@ class run_simbo:
                ax2.set_title(f'Distribution of levels \n step = {self.nop*200+self.nseqv-1}')
                ax3.set_title(f'Accum. distribution \n accum. steps = {self.nop*200-1}')
 
-               plt.savefig('final_step.png')
+               if (sum(all_levels[-1])==2):
+                
+                    plt.savefig('task1_a/final_step.png')
+
+               elif (sum(all_levels[-1])==10) and (self.nop==2):
+
+                    plt.savefig('task1_b/final_step.png') 
+
+               else:
+
+                    plt.savefig('task2/final_step.png')
 
             plt.close()
