@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation &#8212; simbo</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">Home</a></li> 
+        <li> &#187;<a href="run.html">Main class</a></li>
+      </ul>
+    </div>
+    </div>
+  
+
+<div class="document">
+<div class="documentwrapper">
+<div class="bodywrapper">
+<div class="body" role="main">
+            
+<h1>Main class<a id="run_simbo"></a></h1>
+<dl class="py class">
+<dt id="simbo_class.run_simbo">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">simbo_class.</span></code><code class="sig-name descname"><span class="pre">run_simbo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">en</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo" title="Permalink to this definition">¶</a></dt>
+<dd>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.__init__" title="simbo_class.run_simbo.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(en, nop, nu)</p></td>
+<td><p>Initialize instance of run_simbo.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.find_max" title="simbo_class.run_simbo.find_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_max</span></code></a>(all_levels, all_distr, all_dist_sum)</p></td>
+<td><p>Finds maxima of stored data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.find_skips" title="simbo_class.run_simbo.find_skips"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_skips</span></code></a>(maximum)</p></td>
+<td><p>Finds spacing for optimal axis labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.generate_levels" title="simbo_class.run_simbo.generate_levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_levels</span></code></a>()</p></td>
+<td><p>Automatic generation of levels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.setzero" title="simbo_class.run_simbo.setzero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setzero</span></code></a>(levels)</p></td>
+<td><p>Set everything zero.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.getrand" title="simbo_class.run_simbo.getrand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getrand</span></code></a>(levels)</p></td>
+<td><p>Get random molecules.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.exchange" title="simbo_class.run_simbo.exchange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exchange</span></code></a>(ifrom, ito, itr, levels, istep)</p></td>
+<td><p>Exchange energy between levels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.recdist" title="simbo_class.run_simbo.recdist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recdist</span></code></a>(levels, maxlev)</p></td>
+<td><p>Calculate distribution over levels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.accum" title="simbo_class.run_simbo.accum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accum</span></code></a>(maxlev, idist, distr, dist_sum, nstep, …)</p></td>
+<td><p>Calculate accumulated distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.calc_Eav" title="simbo_class.run_simbo.calc_Eav"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_Eav</span></code></a>(maxlev, distr)</p></td>
+<td><p>Calculate average energy from distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.calc_Bolt_ent" title="simbo_class.run_simbo.calc_Bolt_ent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_Bolt_ent</span></code></a>(distr)</p></td>
+<td><p>Calculate Boltzmann entropy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.calc_av_ent" title="simbo_class.run_simbo.calc_av_ent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_av_ent</span></code></a>(dist_sum)</p></td>
+<td><p>Calculate Boltzmann entropy for accumulated distribution (uses Stirling approximation for N!).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.calc_prob_temp" title="simbo_class.run_simbo.calc_prob_temp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_prob_temp</span></code></a>(dist_sum)</p></td>
+<td><p>Calculate probability distribution and do least square fit to get temperature.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.store_data" title="simbo_class.run_simbo.store_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store_data</span></code></a>(levels, all_levels, all_distr, …)</p></td>
+<td><p>Appends to stored data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.run" title="simbo_class.run_simbo.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(levels, nstot)</p></td>
+<td><p>Runs simulations after initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.show" title="simbo_class.run_simbo.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>(all_levels, all_distr, all_dist_sum, …)</p></td>
+<td><p>Shows animation of stored data from simulation run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.run_eq" title="simbo_class.run_simbo.run_eq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_eq</span></code></a>(levels, nstot)</p></td>
+<td><p>Runs only equilibration after initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="run_methods.html#simbo_class.run_simbo.plot_frames" title="simbo_class.run_simbo.plot_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_frames</span></code></a>(all_levels, all_distr, …)</p></td>
+<td><p>Plots the first &lt;frames&gt; steps plus final step from simulation run in same way as animation.</p></td>
+</tr>
+</tbody>
+</table>
+
+<h2>Class attributes</h2>
+<dl class="py method">
+
+    <dd><dl>
+    <dt><strong>k_B</strong><span class="classifier">float</span></dt><dd><p>Boltzmann constant (from scipy.constants)</p>
+    </dd>
+    <dt><strong>h</strong><span class="classifier">float</span></dt><dd><p>Planck’s constant (from scipy.constants)</p>
+    </dd>
+    <dt><strong>c</strong><span class="classifier">float</span></dt><dd><p>speed of light (from scipy.constants)</p>
+    </dd>
+    <dt><strong>N_A</strong><span class="classifier">float</span></dt><dd><p>Avogadro’s constant (from scipy.constants)</p>
+    </dd>
+    <dt><strong>nseqv</strong><span class="classifier">int</span></dt><dd><p>Number of equilibration steps (20\(\times\)number of particles)</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+
+</dd></dl>
+
+<div class="clearer"></div>
+
+</div>
+</div>
+</div>
+
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+            <h3><a href="#">Contents</a></h3>
+            <ul>
+              <li><a class="reference internal" href="index.html">Home</a></li>
+        <li><a class="reference internal" href="run.html">Main class</a></li>
+        <ul>
+            <li><a class="reference internal" href="run_methods.html">Methods</a></li>
+        </ul>
+        <li><a class="reference internal" href="extra.html">Extra functions</a></li>
+        <ul>
+            <li><a class="reference internal" href="extra_methods.html">Methods</a></li>
+        </ul>
+</ul>
+
+  </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+<div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+</div>
+    
+      <div class="clearer"></div>
+</div>
+
+<div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">Home</a></li> 
+        <li> &#187;<a href="run.html">Main class</a></li>
+      </ul>
+    </div>
+    </div>
+
+<div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Radost Herboth.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+</body>
+</html>

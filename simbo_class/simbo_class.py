@@ -565,7 +565,7 @@ class run_simbo:
             ax1.set_ylabel('energy')
             ax1.set_ylim(-0.2, max_level+1-0.6)
             ax1.bar(x=labels1, height=trimmed_dist1, color='b')
-            ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
+            ax1.set_title(f'Energy levels \n step = {i+self.nseqv+1}')
             ax1.set_position([0.1, 0.585, 0.36, 0.34])
 
             ax2.cla()
@@ -579,7 +579,7 @@ class run_simbo:
             ax2.set_ylim(-0.2, self.nop+1-0.6)
             ax2.set_xlim(-0.8, max_level+1-0.2)
             ax2.bar(x=labels2, height=trimmed_dist2, color='b')
-            ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
+            ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv+1}')
             ax2.set_position([0.55, 0.585, 0.36, 0.34])
 
             ax3.cla()
@@ -601,7 +601,7 @@ class run_simbo:
             ax3.text(xv, yv*(5/9), 'Statistical weight: \n %.2E' %(all_wbolt[i]))
             ax3.text(xv, yv*(2/9), 'Accum. distribution', fontweight='bold')
             
-            ax3.set_title(f'Accum. distribution \n accum. steps = {i}')
+            ax3.set_title(f'Accum. distribution \n accum. steps = {i+1}')
 
             if units == 'default':
                 ax3.text(xv, yv*(1/9), 'Average entropy: %.2f kJ/mol K' %(all_sa[i]*self.k_B*self.N_A))
@@ -725,27 +725,27 @@ class run_simbo:
             
             if i >= 0:
 
-               ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
-               ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
-               ax3.set_title(f'Accum. distribution \n accum. steps = {i}')
+               ax1.set_title(f'Energy levels \n step = {i+self.nseqv+1}')
+               ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv+1}')
+               ax3.set_title(f'Accum. distribution \n accum. steps = {i+1}')
                
                if (sum(all_levels[-1])==2):
                 
-                    plt.savefig('task1_a/step_%s.png' %(i))
+                    plt.savefig('task1_a/step_%s.png' %(i+1))
 
                elif (sum(all_levels[-1])==10) and (self.nop==2):
                     
-                    plt.savefig('task1_b/step_%s.png' %(i))
+                    plt.savefig('task1_b/step_%s.png' %(i+1))
 
                else:
 
-                    plt.savefig('task2/step_%s.png' %(i))
+                    plt.savefig('task2/step_%s.png' %(i+1))
 
             else:
 
-               ax1.set_title(f'Energy levels \n step = {self.nop*200+self.nseqv-1}')
-               ax2.set_title(f'Distribution of levels \n step = {self.nop*200+self.nseqv-1}')
-               ax3.set_title(f'Accum. distribution \n accum. steps = {self.nop*200-1}')
+               ax1.set_title(f'Energy levels \n step = {self.nop*200+self.nseqv}')
+               ax2.set_title(f'Distribution of levels \n step = {self.nop*200+self.nseqv}')
+               ax3.set_title(f'Accum. distribution \n accum. steps = {self.nop*200}')
 
                if (sum(all_levels[-1])==2):
                 

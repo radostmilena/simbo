@@ -88,7 +88,7 @@ class extra_functions(run_simbo): #inherits objects and some methods from run_si
         else:
             temp = np.nan
 
-        stderr = res*np.sqrt(1/len(lnprdist))*(1/np.sqrt(len(lnprdist)-1))
+        stderr = np.sqrt(res)**(1/np.sqrt(len(lnprdist)-1))
 
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.5))
         plt.rcParams.update({'font.size': 12})
