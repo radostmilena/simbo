@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<hmtl>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Documentation &#8212; simbo</title>
+        <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+        
+        <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+    
+        
+        
+         
+            <script src="_static/jquery.cookie.js"></script>
+        
+    
+        
+         
+            <script src="_static/cloud.base.js"></script>
+        
+    
+        
+         
+            <script src="_static/cloud.js"></script>
+        
+    
+        <link rel="index" title="Index" href="genindex.html" />
+        <link rel="search" title="Search" href="search.html" /> 
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+      </head>
+      
+      <body>
+        <div class="relbar-top">
+            
+        <div class="related" role="navigation" aria-label="related navigation">
+          <h3>Navigation</h3>
+          <ul>
+            <li class="right" style="margin-right: 10px">
+              <a href="genindex.html" title="General Index"
+                 accesskey="I">index</a></li>
+    
+            <li class="nav-item nav-item-this"><a href="index.html">Home</a></li> 
+            <li> &#187;<a href="extra.html">Extra functions</a></li>
+            <li> &#187;<a href="extra_methods.html">Methods</a></li>
+          </ul>
+        </div>
+        </div>
+
+        <div class="document">
+            <div class="documentwrapper">
+            <div class="bodywrapper">
+            <div class="body" role="main">
+
+<h1>Extra functions<a id="extra_functions"></a></h1>
+<dl class="py class">
+<dt id="simbo_class.extra_functions">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">simbo_class.</span></code><code class="sig-name descname"><span class="pre">extra_functions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">en</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.extra_functions" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+</dd>
+</dl>
+
+<dl class="py method">
+    <dt id="simbo_class.extra_functions.__init__">
+    <code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">en</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.extra_functions.__init__" title="Permalink to this definition" target="_blank">¶</a></dt>
+    <dd><p>Constructor (inherits from run_simbo class)</p>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.extra_functions.find_skips">
+    <code class="sig-name descname"><span class="pre">find_skips</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.extra_functions.find_skips" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Finds spacing for optimal axis labels. (Could have been inherited from run_simbo, but it didn’t work for some reason).</p>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.extra_functions.get_w_sw">
+    <code class="sig-name descname"><span class="pre">get_w_sw</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">en</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.extra_functions.get_w_sw" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Allows user to play around with W and S_w for Task 6. Input is an average energy per particle (reduced units) and the number of particles. These are not attributes of <em>run_simbo</em> (!!). It then generates levels for these parameters in the same way as <em>generate_levels()</em>, calculates the distribution over the energy levels, the statistical weight and the Boltzmann entropy. The output is a plot of the levels per molecule (see example below) and the value of the statistical weight and the Boltzmann entropy.</p><img src="levels.png" alt="Levels for 10 particles and average energy of 2.">
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.extra_functions.plot_eq">
+    <code class="sig-name descname"><span class="pre">plot_eq</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_wbolt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.extra_functions.plot_eq" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Plots equilibration data generated by run_eq (statistical weight and Boltzmann entropy in kJ/mol K).
+    <dl class="field-list simple">
+      <dt class="field-odd">Parameters</dt>
+      <dd class="field-odd"><dl class="simple">
+        <dt><strong>all_wbolt</strong><span class="classifier">np.array, shape=[nstot], dtype=int</span></dt><dd><p>Stored data for statistical weight from equilibration run.</p>
+      </dd>
+      <dd>
+        <dt><strong>all_sw</strong><span class="classifier">np.array, shape=[nstot], dtype=float</span></dt><dd><p>Stored data for Boltzmann entropy from equilibration run</p>
+      </dd>
+      </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.extra_functions.plot_prob_temp">
+    <code class="sig-name descname"><span class="pre">plot_prob_temp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist_sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.extra_functions.plot_prob_temp" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Calculates probability distribution from average distribution over levels (<em>dist_sum</em>). Since <em>dist_sum</em> gives the instantaneous average number of particles in each level, the instantaneous probability for a certain level, can be calculated by simply dividing by the total number of molecules. Because the logarithm of the probability <em>ln p(r)</em> is proportional to the temperature as $$ \ln {p(r) \sim -\frac{E}{T}} $$ (reduced units) in the Boltzmann distribution, we can do a least square fit to get the temperature, as the slope of a fit to <em>ln p(r)</em> against <em>E</em> will be equal to <em>-1/T</em>. In our case <em>E</em> will be the energy of a certain level and <em>p(r)</em> the probablility for this levels as calculated from <em>dist_sum</em>. The standard error of the temperature is calculated from the square residual of the least-square regression <em>r</em> using Bessel's correction $$ {s = \frac{1}{\sqrt{N-1}}\sqrt{r}}. $$ Two graphs are plotted (see example below), one with <em>ln p(r)</em> as a function of the level <em>n</em> and the linear regression line and results of the temperature calculation. The other graph plots the probability distribution over the levels and fits the Boltzmann distribution $$ {p (r) = \frac{\exp\{{-n/T}\}}{q}} $$ where $$ {q = \sum \exp{\{-n/T\}}} $$ to the plotted distribution. The temperature used in the distribution is the calculated one from the regression.</p><img src="boltzmann_dist_25_molecules.png", alt="Temperature calculation and Boltzmann distribution for 25 particles.">
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.extra_functions.print_w_sw">
+    <code class="sig-name descname"><span class="pre">print_w_sw</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_wbolt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.extra_functions.print_w_sw" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Prints W and S_w for selected interval and units.  (Not used in tasks)</p>
+    </dd></dl>
+
+</dd></dl>
+
+<div class="clearer"></div>
+
+</div>
+</div>
+</div>
+
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+            <h3><a href="#">Contents</a></h3>
+            <ul>
+              <li><a class="reference internal" href="index.html">Home</a></li>
+        <li><a class="reference internal" href="run.html">Main class</a></li>
+        <ul>
+            <li><a class="reference internal" href="run_methods.html">Methods</a></li>
+        </ul>
+        <li><a class="reference internal" href="extra.html">Extra functions</a></li>
+        <ul>
+            <li><a class="reference internal" href="extra_methods.html">Methods</a></li>
+        </ul>
+</ul>
+
+  </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+<div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+</div>
+    
+      <div class="clearer"></div>
+</div>
+
+<div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">Home</a></li> 
+        <li> &#187;<a href="extra.html">Extra functions</a></li>
+        <li> &#187;<a href="extra_methods.html">Methods</a></li>
+      </ul>
+    </div>
+    </div>
+
+<div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Radost Herboth.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation &#8212; simbo</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+
+        <li class="nav-item nav-item-this"><a href="">Home</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+<div class="document">
+<div class="documentwrapper">
+<div class="bodywrapper">
+<div class="body" role="main">
+
+<h1>Home</h1>
+
+<h2>About</h2>
+      
+<p> The package uses Python 3.8.10 in a <em>conda</em> environment, so the notebook will only run correctly
+  in this environment due to package dependencies. To use the conda environment, we we will install 
+  the minimal version of Anaconda, Miniconda, this requires that
+  you have a minimum disk space of 400 MB and if you are using Windows, a
+  version of it that is Windows 8 or newer. Instructions on how to install Anaconda and 
+  create your environment can be found at the bottom of this page. </p>
+
+  <h2>Classes</h2>
+
+  <p> The main class is called <a href="run.html" target="_self"><em>run_simbo</em>.</a> This class
+  has most of the functionalities for running the simulation, including initialization of a simulation, 
+  advancing by one step, storing data, calculating energies and more.
+  The auxiliary class is called <a href="extra.html" target="_self">extra_functions.</a> This 
+  class has some extra functions for plotting etc. that would have made <a href="run.html" target="_self"><em>run_simbo</em></a>  too messy. 
+  It is a subclass of <a href="run.html" target="_self"><em>run_simbo</em></a>  however, so it inherits some of the methods. </br></br>
+  A list of all methods and a short description of each method can be found on the main page for each class
+  (<a class="reference internal" href="run.html">Main class</a> and <a class="reference internal" href="extra.html">Extra functions</a>). 
+  A detailed description for all methods can be found under the subheading <em>Methods</em> in the sidebar or by clicking on a specific method in the main page list.</p>
+
+<h2>Installation</h2>
+
+<p>
+  <h4>Installing in Windows</h4>
+  <ol>
+    <li>
+      Download the latest Miniconda installer for your system architecture
+      from the <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda website</a>.
+    </li>
+    <li>
+      Double click the <em>.exe</em> file and follow the instructions on the screen. If
+      you are unsure about any setting, accept the defaults, you can change
+      them later. When installation is finished, open the Anaconda Prompt
+      from the Start menu.
+    </li>
+    <li>
+      Run the command <em>conda list</em> in your Anaconda Prompt. A
+      list of installed packages appears if it has been installed correctly.
+    </li>
+  </ol>
+
+  Now we need to create the environment that we are going to be working in.
+  In Anaconda Prompt, run the following command </br></br>
+  
+  <em>conda create -n simbo python=3.8.10 notebook=6.2.0 matplotlib=3.3.4 numpy scipy</em> </br></br>
+  It will install the required packages and you can now run <em>conda activate simbo</em>
+  to activate the environment. On the left side of the window, it should now
+  say (simbo), which means your environment is activated.  </br></br>
+  Now we need to download the actual code, so go to the code's 
+  <a href="https://github.com/radostmilena/simbo">Github page</a>
+  and click on the green button labeled Code. Download the ZIP file and
+  unpack it. Go to the Start menu and search for Jupyter. It should show you
+  an application called Jupyter Notebook (simbo). Double click on the icon
+  and it will open a tab in your browser where you will see all Jupyter files currently in 
+  your directory.
+  
+  <h4>Installing in MacOS/Linux</h4>
+
+  <ol>
+    <li>
+      Download the latest Miniconda installer for your system architecture
+      from the <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda website</a> 
+      (for Mac, choose the <em>.bash</em> file).
+    </li>
+    <li>
+      In your terminal window, run </br></br>
+  <em>bash filename</em> </br></br>
+  where <em>filename</em> is the name of your installer, and follow the instructions on the 
+  screen. If you are unsure about any setting, accept the defaults, you can change them
+  later. To make the changes take effect, close and then re-open your
+  terminal window.
+    </li>
+    <li>
+      Run the command <em>conda list</em> in your terminal window. A
+      list of installed packages appears if it has been installed correctly.
+    </li>
+  </ol>
+
+  Now we need to create the environment that we are going to be working in.
+  In your terminal window, run the following command </br></br>
+  
+  <em>conda create -n simbo python=3.8.10 notebook=6.2.0 matplotlib=3.3.4 numpy scipy</em> </br></br>
+  It will install the required packages and you can now run <em>conda activate simbo</em>
+  to activate the environment. On the left side of the window, it should now
+  say (simbo), which means your environment is activated.  </br></br>
+  Now we need to download the actual code, so go to the code's 
+  <a href="https://github.com/radostmilena/simbo">Github page</a>
+  and click on the green button labeled Code. Download the ZIP file and
+  unpack it. Open a terminal window and run the command </br></br>
+  <em>jupyter-notebook</em> </br></br>
+  It will open a tab in your browser where you will see all Jupyter files currently in 
+  your directory. 
+
+  </p>
+
+<div class="clearer"></div>
+
+</div>
+</div>
+</div>
+
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="#">Contents</a></h3>
+    <ul>
+      <li><a class="reference internal" href="index.html">Home</a></li>
+      <li><a class="reference internal" href="run.html">Main class</a></li>
+      <ul>
+          <li><a class="reference internal" href="run_methods.html">Methods</a></li>
+      </ul>
+      <li><a class="reference internal" href="extra.html">Extra functions</a></li>
+      <ul>
+          <li><a class="reference internal" href="extra_methods.html">Methods</a></li>
+      </ul>
+</ul>
+
+  </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+<div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+</div>
+    
+      <div class="clearer"></div>
+</div>
+
+<div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">Home</a></li> 
+      </ul>
+    </div>
+    </div>
+
+<div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Radost Herboth.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

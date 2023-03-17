@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation &#8212; simbo</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">Home</a></li> 
+        <li> &#187;<a href="run.html">Main class</a></li>
+        <li> &#187;<a href="run_methods.html">Methods</a></li>
+      </ul>
+    </div>
+    </div>
+  
+
+<div class="document">
+<div class="documentwrapper">
+<div class="bodywrapper">
+<div class="body" role="main">
+            
+<h1>Main class<a id="run_simbo"></a></h1>
+<dl class="py class">
+<dt id="simbo_class.run_simbo">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">simbo_class.</span></code><code class="sig-name descname"><span class="pre">run_simbo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">en</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo" title="Permalink to this definition">¶</a></dt>
+<dd>
+
+<dl class="py method">
+    <dt id="simbo_class.run_simbo.__init__">
+    <code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">en</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.__init__" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Initialize instance of run_simbo.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>en</strong><span class="classifier">int</span></dt><dd><p>Average energy per particle (!) in reduced units.</p>
+    </dd>
+    <dt><strong>nop</strong><span class="classifier">int</span></dt><dd><p>Number of particles.</p>
+    </dd>
+    <dt><strong>nu</strong><span class="classifier">int</span></dt><dd><p>Spacing of energy levels in cm\(^{-1}\).</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.accum">
+    <code class="sig-name descname"><span class="pre">accum</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxlev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nstep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_dist_sum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.accum" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Calculate the accumulated distribution over the levels as of the current simulaiton step.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>maxlev</strong><span class="classifier">int</span></dt><dd><p>Highest possible level for the given total energy.</p>
+    </dd>
+    <dt><strong>idist</strong><span class="classifier">np.array, shape=[maxlev], dtype=int</span></dt><dd><p>Instantaneous sum of the distribution over the levels (not averaged over steps!).</p>
+    </dd>
+    <dt><strong>distr</strong><span class="classifier">np.array, shape=[maxlev], dtype=int</span></dt><dd><p>Instantaneous distribution of molecules over levels.</p>
+    </dd>
+    <dt><strong>dist_sum</strong><span class="classifier">np.array, shape=[maxlev], dtype=float</span></dt><dd><p>Average distribution of molecules over the levels as of the current step (basically idist divided by the number of steps).</p>
+    </dd>
+    <dt><strong>nstep</strong><span class="classifier">int</span></dt><dd><p>Accumulated simulation step (current simulation step minus the number of steps spent on equilibration).</p>
+    </dd>
+    <dt><strong>all_dist_sum</strong><span class="classifier">np.ndarray, shape=[nstep, maxlev], dtype=float</span></dt><dd><p>Average number of particles (accumulated over simulation) at all steps so far simulated.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>idist</strong><span class="classifier">np.array, shape=[maxlev], dtype=int</span></dt><dd><p>Updated instantaneous sum of distribution over levels.</p>
+    </dd>
+    <dt><strong>dist_sum</strong><span class="classifier">np.array, shape=[maxlev], dtype=float</span></dt><dd><p>Updated average distribution of molecules over the levels.</p>
+    </dd>
+    <dt><strong>all_dist_sum</strong><span class="classifier">np.ndarray, shape=[nstep, maxlev], dtype=float</span></dt><dd><p>Average number of particles (accumulated over simulation) at all steps up to nstep.</p>
+    </dd>
+    <dt><strong>nstep</strong><span class="classifier">int</span></dt><dd><p>Updated accumulated simulation step.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.calc_Bolt_ent">
+    <code class="sig-name descname"><span class="pre">calc_Bolt_ent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.calc_Bolt_ent" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Calculate Boltzmann entropy from $$ {S = k \ln W} $$ where $$ {W = \frac{N!}{\Pi_j N_j!}} $$ with <em>N</em> being the total number of particles and <em>N_j</em> being the number of particles in a level <em>j</em>.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>distr</strong><span class="classifier">np.array, shape=[maxlev], dtype=int</span></dt><dd><p>Instantaneous distribution of particles over the levels.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>S_w</strong><span class="classifier">float</span></dt><dd><p>Boltzmann entropy</p>
+    </dd>
+    <dt><strong>W</strong><span class="classifier">int</span></dt><dd><p>Statistical weight</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.calc_Eav">
+    <code class="sig-name descname"><span class="pre">calc_Eav</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxlev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.calc_Eav" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Calculate instantaneous average energy from instantaneous distribution of particles over the levels.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>maxlev</strong><span class="classifier">int</span></dt><dd><p>Highest possible level for the given average energy.</p>
+    </dd>
+    <dt><strong>distr</strong><span class="classifier">np.array, shape=[maxlev], dtype=int</span></dt><dd><p>Instantaneous distribution of particles over the levels.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>U</strong><span class="classifier">float</span></dt><dd><p>Average energy per particle.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.calc_av_ent">
+    <code class="sig-name descname"><span class="pre">calc_av_ent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist_sum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.calc_av_ent" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Calculate Boltzmann entropy for accumulated distribution from $$ {S = k \ln W} $$ where $$ {W = \frac{N!}{\Pi_j N_j!}} $$ with <em>N</em> being the total number of particles and <em>N_j</em> being the number of particles in a level <em>j</em>. Since the average number of particles is used, <em>N</em> is not an integer, so the Stirling approximation $$ {N! = N \cdot \log N - N} $$ is used for all instances of <em>N!</em> or <em>N_j!</em>.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>dist_sum</strong><span class="classifier">np.array, shape=[maxlev], dtype=float</span></dt><dd><p>Average distribution of particles over the levels at current step of simulation.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>S_a</strong><span class="classifier">float</span></dt><dd><p>Average entropy at current step of simulation.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.calc_prob_temp">
+    <code class="sig-name descname"><span class="pre">calc_prob_temp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist_sum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.calc_prob_temp" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Calculate probability distribution from average distribution over levels (<em>dist_sum</em>). Since <em>dist_sum</em> gives the instantaneous average number of particles in each level, the instantaneous probability for a certain level, can be calculated by simply dividing by the total number of molecules. Because the logarithm of the probability <em>ln p(r)</em> is proportional to the temperature as $$ \ln {p(r) \sim -\frac{E}{T}} $$ (reduced units) in the Boltzmann distribution, we can do a least square fit to get the temperature, as the slope of a fit to <em>ln p(r)</em> against <em>E</em> will be equal to <em>-1/T</em>. In our case <em>E</em> will be the energy of a certain level and <em>p(r)</em> the probablility for this levels as calculated from <em>dist_sum</em>.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>dist_sum</strong><span class="classifier">np.array, shape=[maxlev], dtype=float</span></dt><dd><p>Average distribution of molecules over the levels at current simulation step.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>temp</strong><span class="classifier">float</span></dt><dd><p>Instantaneous temperature</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.exchange">
+    <code class="sig-name descname"><span class="pre">exchange</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifrom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ito</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">istep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.exchange" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Exchange energy between levels. Takes as input 'ifrom', 'ito' and 'itr' from the getrand() function. Increases level of 'ito' by 'itr' and decreases level of 'ifrom' by 'itr'. Update levels and increase simulation step by 1. If the level of 'ifrom' is zero, no exchange is performed and the simulation step is increased without updating the levels.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>ifrom</strong><span class="classifier">int</span></dt><dd><p>index of particle emitting quantum.</p>
+    </dd>
+    <dt><strong>ito</strong><span class="classifier">int</span></dt><dd><p>index of particle absorbing quantum</p>
+    </dd>
+    <dt><strong>itr</strong><span class="classifier">int</span></dt><dd><p>quantum to be exchanged</p>
+    </dd>
+    <dt><strong>levels</strong><span class="classifier">np.array, shape=[nop], dtype=int</span></dt><dd><p>Current levels of the individual particles.</p>
+    </dd>
+    <dt><strong>istep</strong><span class="classifier">int</span></dt><dd><p>Current simulation step.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>levels</strong><span class="classifier">np.array, shape=[nop], dtype=int</span></dt><dd><p>Updated levels of the individual particles.</p>
+    </dd>
+    <dt><strong>istep</strong><span class="classifier">int</span></dt><dd><p>Updated simulation step.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.find_max">
+    <code class="sig-name descname"><span class="pre">find_max</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_distr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_dist_sum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.find_max" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Finds maxima of stored data. All parameters were initialized by setzero and appended to by store_data.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>all_levels</strong><span class="classifier">np.ndarray, shape=[steps, nop]</span></dt><dd><p>Levels of the individual particles at all steps of the simulation.</p>
+    </dd>
+    <dt><strong>all_distr</strong><span class="classifier">np.ndarray, shape=[steps, maxlev]</span></dt><dd><p>Number of particles in the individual levels at all steps of the simulation.</p>
+    </dd>
+    <dt><strong>all_dist_sum</strong><span class="classifier">np.ndarray, shape=[steps, maxlev]</span></dt><dd><p>Average number of particles (accumulated over simulation) at all steps.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>max_level</strong><span class="classifier">int</span></dt><dd><p>Maximum level observed during simulation.</p>
+    </dd>
+    <dt><strong>max_distr</strong><span class="classifier">int</span></dt><dd><p>Maximum number of particled in one level observed in simulation.</p>
+    </dd>
+    <dt><strong>max_dist_sum</strong><span class="classifier">float</span></dt><dd><p>Maximum average number of particles in accumulated distribution.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.find_skips">
+    <code class="sig-name descname"><span class="pre">find_skips</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.find_skips" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Finds spacing for optimal axis labels of plots. More of a helper function for visualization.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>maximum</strong><span class="classifier">int</span></dt><dd><p>Maximum of data to be plotted.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>skip</strong><span class="classifier">int</span></dt><dd><p>Optimal spacing of axis.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.generate_levels">
+    <code class="sig-name descname"><span class="pre">generate_levels</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.generate_levels" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Automatic generation of levels from random number generator. Generates random number <em>r</em> between 0 and 1, then calculates the level <em>l</em> of a particle as $$ {l = r \cdot 2 E_\mathrm{av} + 0.5.} $$</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>nop</strong><span class="classifier">class attribute</span></dt><dd><p>See documentation of constructor.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>levels</strong><span class="classifier">np.array, shape=[nop], dtype=int</span></dt><dd><p>Initial levels of the individual particles.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.getrand">
+    <code class="sig-name descname"><span class="pre">getrand</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.getrand" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Get random molecules to do exchange on. If we would simply select two random molecules each time, we would have the same transition probablility, but the probability densities in the initial and final states are different, so detailed balance would not be fulfilled. So instead we generate a random number in the range of 0 to the total energy, then sum over the levels, until we find the molecule at which the sum of levels is closest to the random number without going over. Set the index of this molecule as 'ifrom' and the quantum to be exchanged as the difference between the sum at this index and the random number. Find a second random number that is not 'ifrom' and set it to 'ito'.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>levels</strong><span class="classifier">np.array, shape=[nop], dtype=int</span></dt><dd><p>Current levels of the individual particles.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>ifrom</strong><span class="classifier">int</span></dt><dd><p>index of particle emitting quantum.</p>
+    </dd>
+    <dt><strong>ito</strong><span class="classifier">int</span></dt><dd><p>index of particle absorbing quantum</p>
+    </dd>
+    <dt><strong>itr</strong><span class="classifier">int</span></dt><dd><p>quantum to be exchanged</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.plot_frames">
+    <code class="sig-name descname"><span class="pre">plot_frames</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_distr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_dist_sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_uav</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_wbolt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.plot_frames" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Plots the first &lt;frames&gt; steps plus final step from simulation run, formatted in the same way as the animation.</p>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.recdist">
+    <code class="sig-name descname"><span class="pre">recdist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxlev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.recdist" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Calculates the instantaneous distribution over levels.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>levels</strong><span class="classifier">np.array, shape=[nop], dtype=int</span></dt><dd><p>Current levels of the individual particles.</p>
+    </dd>
+    <dt><strong>maxlev</strong><span class="classifier">int</span></dt><dd><p>Highest possible level for the given total energy.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>distr</strong><span class="classifier">np.array, shape=[maxlev], dtype=int</span></dt><dd><p>Instantaneous distribution of particles over levels.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.run">
+    <code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nstot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.run" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Runs simulation after initialization by exchanging energy of two molecules each step for <em>nstot</em> steps. Will only accumulate and store data after equiibration. Returns stored data and calculated thermodynamic properties for all steps.</p>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.run_eq">
+    <code class="sig-name descname"><span class="pre">run_eq</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nstot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.run_eq" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Runs simulation after initialization, but only calculates and saves instantaneous distribution over levels, instantaneous statistical weight and instantaneous Bolzmann entropy.</p>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.setzero">
+    <code class="sig-name descname"><span class="pre">setzero</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.setzero" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Initialize all arrays and counters by setting them to zero.</p>
+    <dl class="field-list simple">
+    <dt class="field-odd">Parameters</dt>
+    <dd class="field-odd"><dl class="simple">
+    <dt><strong>levels</strong><span class="classifier">np.array, shape=[nop], dtype=int</span></dt><dd><p>Initial levels of the individual particles.</p>
+    </dd>
+    </dl>
+    </dd>
+    <dt class="field-even">Returns</dt>
+    <dd class="field-even"><dl class="simple">
+    <dt><strong>maxlev</strong><span class="classifier">int</span></dt><dd><p>Highest level possible for the given total energy, eg. if levels are [1, 1, 2], the highest occupied level will be 4. Used to initialize all arrays that show distribution of molecules over the levels.</p>
+    </dd>
+    <dt><strong>idist</strong><span class="classifier">np.array, shape=[maxlev]</span></dt><dd><p>Instantaneous distribution of levels, i.e. how many molecules are in each level in this step.</p>
+    </dd>
+    <dt><strong>dist_sum</strong><span class="classifier">np.ndarray, shape=[steps, maxlev]</span></dt><dd><p>Accumulated distribution.</p>
+    </dd>
+    <dt><strong>nstep</strong><span class="classifier">int</span></dt><dd><p>Accumulated steps.</p>
+    </dd>
+    <dt><strong>istep</strong><span class="classifier">int</span></dt><dd><p>Current step of simulation.</p>
+    </dd>
+    <dt><strong>all_levels</strong><span class="classifier">np.ndarray, shape=[steps, nop], dtype=int</span></dt><dd><p>Levels of the individual particles at all steps of the simulation.</p>
+    </dd>
+    <dt><strong>all_distr</strong><span class="classifier">np.ndarray, shape=[steps, maxlev], dtype=int</span></dt><dd><p>Number of particles in the individual levels at all steps of the simulation.</p>
+    </dd>
+    <dt><strong>all_dist_sum</strong><span class="classifier">np.ndarray, shape=[steps, maxlev], dtype=float</span></dt><dd><p>Average number of particles (accumulated over simulation) at all steps.</p>
+    </dd>
+    <dt><strong>all_uav</strong><span class="classifier">np.array, shape=[steps], dtype=float</span></dt><dd><p>Average energy at all steps of the simulation.</p>
+    </dd>
+    <dt><strong>all_wbolt</strong><span class="classifier">np.array, shape=[steps], dtype=float</span></dt><dd><p>Boltzmann entropy at all steps of the simulation.</p>
+    </dd>
+    <dt><strong>all_sw</strong><span class="classifier">np.array, shape=[steps], dtype=int</span></dt><dd><p>Statistical weight (binomial formula) at all steps of the simulation.</p>
+    </dd>
+    <dt><strong>all_sa</strong><span class="classifier">np.array, shape=[steps], dtype=float</span></dt><dd><p>Average entropy at all steps of the simulation (calculated from accumulated distribution using Stirling approximation).</p>
+    </dd>
+    <dt><strong>all_temp</strong><span class="classifier">np.array, shape=[steps], dtype=float</span></dt><dd><p>Temperature calculated from a fit of the probability distribution to the Boltzmann distribution.</p>
+    </dd>
+    <dt><strong>zero_array</strong><span class="classifier">np.array</span></dt><dd><p>I have no idea what this is for, but I am too scared to remove it.</p>
+    </dd>
+    </dl>
+    </dd>
+    </dl>
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.show">
+    <code class="sig-name descname"><span class="pre">show</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_distr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_dist_sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_uav</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_wbolt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.show" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Shows animation of stored data from simulation run using <em>matplotlib.animation</em>. Animation frames will look like picture below (example for simulation of 3 particles). </p><img src="step_9.png" alt="Snapshot of animation">
+    </dd></dl>
+    
+    <dl class="py method">
+    <dt id="simbo_class.run_simbo.store_data">
+    <code class="sig-name descname"><span class="pre">store_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_distr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_uav</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxlev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_wbolt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_sa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_temp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simbo_class.run_simbo.store_data" title="Permalink to this definition">¶</a></dt>
+    <dd><p>Appends to stored data. For <em>levels</em> and <em>distr</em>, values that are zero are set to 0.05 instead, so they can be displayed in the animation in <em>show()</em>.</p>
+    </dd></dl>
+
+</dd></dl>
+
+<div class="clearer"></div>
+
+</div>
+</div>
+</div>
+
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+            <h3><a href="#">Contents</a></h3>
+            <ul>
+              <li><a class="reference internal" href="index.html">Home</a></li>
+        <li><a class="reference internal" href="run.html">Main class</a></li>
+        <ul>
+            <li><a class="reference internal" href="run_methods.html">Methods</a></li>
+        </ul>
+        <li><a class="reference internal" href="extra.html">Extra functions</a></li>
+        <ul>
+            <li><a class="reference internal" href="extra_methods.html">Methods</a></li>
+        </ul>
+</ul>
+
+  </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+<div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+</div>
+    
+      <div class="clearer"></div>
+</div>
+
+<div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">Home</a></li> 
+        <li> &#187;<a href="run.html">Main class</a></li>
+        <li> &#187;<a href="run_methods.html">Methods</a></li>
+      </ul>
+    </div>
+    </div>
+
+<div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Radost Herboth.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+</body>
+</html>

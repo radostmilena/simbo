@@ -9,10 +9,56 @@ from matplotlib.animation import FuncAnimation
 plt.rcParams.update({'font.size': 6.5})
 
 class run_simbo:
-    
-    #constructor
-    def __init__(self, en, nop, nu):
+    """
+    :class: All functionalities for running the simulation.
 
+    Attributes
+    ----------
+    k_B : float
+          Boltzmann constant (from scipy.constants)
+    h : float
+          Planck's constant (from scipy.constants)
+    c : float
+          speed of light (from scipy.constants)
+    N_A : float
+          Avogadro's constant (from scipy.constants)
+    nseqv : int
+          Number of equilibration steps (20*number of particles)
+
+    Methods
+    -------
+    __init__ 
+    find_max
+    find_skips
+    generate_levels
+    setzero
+    getrand
+    exchange
+    recdist
+    accum
+    calc_Eav
+    calc_Bolt_ent
+    calc_av_ent
+    calc_prob_temp
+    store_data
+    run
+    show
+    run_eq
+    plot_frames
+    """
+    def __init__(self, en, nop, nu):
+        """
+        Initialize instance of run_simbo.
+
+        Parameters
+        ----------
+        en : int
+             Average energy per particle (!) in reduced units.
+        nop : int
+             Number of particles.
+        nu : int
+             Spacing of energy levels in cm^-1.
+        """
         self.en = en
         self.nop = nop
         self.nu = nu*1e2
@@ -27,7 +73,29 @@ class run_simbo:
     #helpful functions
     def find_max(self, all_levels, all_distr, all_dist_sum):
         """
-        Finds maxima of stored data.   
+        Finds maxima of stored data.
+
+        Parameters
+        ----------
+        all_levels : array of arrays
+                    Levels of the individual particles at all steps of the simulation.
+        all_distr : array of arrays
+                    Number of particles in the individual levels at all steps of the simulation.
+        all_dist_sum : array of arrays
+                    Average number of particles (accumulated over simulation) at all steps.                  
+           
+        Returns
+        -------
+        max_level : int
+                    Maximum level observed during simulation.
+        max_distr : int
+                    Maximum number of particled in one level observed in simulation.
+        max_dist_sum : float
+                    Maximum average number of particles in accumulated distribution.
+
+        Notes
+        -----
+        All parameters were initialized by setzero and appended to by store_data.
         """
         max_levels = []
         max_distr = []
@@ -47,6 +115,16 @@ class run_simbo:
     def find_skips(self, maximum):
         """
         Finds spacing for optimal axis labels.
+
+        Parameters
+        ----------
+        maximum : int
+                  Maximum of data to be plotted.
+
+        Returns
+        -------
+        skip : int
+               Optimal spacing of axis.
         """
         skips = [1, 2, 5]
         if maximum >= 15 and maximum <= 25:
@@ -62,6 +140,16 @@ class run_simbo:
     def generate_levels(self):
         """
         Automatic generation of levels.
+
+        Parameters
+        ----------
+        nop : class attribute
+              See documentation of constructor.
+
+        Returns
+        -------
+        levels : array of ints
+                 Initial levels of the individual particles.
         """
         levels = np.zeros(self.nop)
 
@@ -73,6 +161,42 @@ class run_simbo:
     def setzero(self, levels):
         """
         Set everything zero. 
+
+        Parameters
+        ----------
+        levels : array of ints
+                 Initial levels of the individual particles.
+
+        Returns
+        -------
+        maxlev : int
+                 Highest level possible for the given total energy.
+        idist : array
+                 Instantaneous distribution of levels.
+        dist_sum : array
+                 Accumulated distribution.
+        nstep : int
+                 Accumulated steps.
+        istep : int
+                 Current step of simulation.
+        all_levels : array of arrays
+                 Levels of the individual particles at all steps of the simulation.
+        all_distr : array of arrays
+                 Number of particles in the individual levels at all steps of the simulation.
+        all_dist_sum : array of arrays
+                 Average number of particles (accumulated over simulation) at all steps.  
+        all_uav : array
+                 Average energy at all steps of the simulation.
+        all_wbolt : array
+                 Boltzmann entropy at all steps of the simulation.
+        all_sw : array
+                 Statistical weight (binomial formula) at all steps of the simulation.
+        all_sa : array
+                 Average entropy at all steps of the simulation (calculated from accumulated distribution using Stirling approximation).
+        all_temp : array
+                 Temperature calculated from a fit of the probability distribution to the Boltzmann distribution.
+        zero_array : array
+                 I have no idea what this is for.
         """
         maxlev = int(sum(levels)+1)
         idist = np.zeros(maxlev)
@@ -94,7 +218,21 @@ class run_simbo:
     #functions for running simulation
     def getrand(self, levels):
         """
-        Get random molecules.
+        Get random molecules. Uses detailed balance.
+
+        Parameters
+        ----------
+        levels : array of ints
+                 Current levels of the individual particles.
+
+        Returns
+        -------
+        ifrom : int
+                index of particle emitting quantum.
+        ito : int
+                index of particle absorbing quantum
+        itr : int
+                quantum
         """
         #get ifrom
         Etot = sum(levels)
@@ -120,6 +258,27 @@ class run_simbo:
     def exchange(self, ifrom, ito, itr, levels, istep):
         """
         Exchange energy between levels.
+
+        Parameters
+        ----------
+        ifrom : int
+                index of particle emitting quantum.
+        ito : int
+                index of particle absorbing quantum
+        itr : int
+                quantum
+        levels : array
+                Current levels of the individual particles.
+        istep : int
+                Current simulation step.
+
+        Returns
+        -------
+        levels : array
+                 Modified levels of the individual particles.
+        istep : int
+                 New simulation step.
+
         """
         if levels[ifrom] > 0:
 
@@ -136,6 +295,18 @@ class run_simbo:
     def recdist(self, levels, maxlev):
         """
         Calculate distribution over levels.
+
+        Parameters
+        ----------
+        levels : array
+                 Current levels of the individual particles.
+        maxlev : int
+                 Highest possible level for the given total energy.
+
+        Returns
+        -------
+        distr : array
+                Distribution of particles over levels, somehow different from idist.
         """
         distr = np.zeros(maxlev)
 
@@ -145,11 +316,37 @@ class run_simbo:
             else:
                 print('error')
     
-        return(distr)
+        return(distr.astype(int))
 
     def accum(self, maxlev, idist, distr, dist_sum, nstep, all_dist_sum):
         """
         Calculate accumulated distribution.
+
+        Parameters
+        ----------
+        maxlev : int
+                 Highest possible level for the given total energy.
+        idist : array
+                  Instantaneous sum of distribution of levels.
+        distr : array
+                  Instantaneous distribution of levels.
+        dist_sum : array
+                  Accumulated distribution.
+        nstep : int
+                  Accumulated simulation step.
+        all_dist_sum : array of arrays
+                   Average number of particles (accumulated over simulation) at all steps.  
+
+        Returns
+        -------   
+        idist : array
+                  Instantaneous sum of distribution of levels.
+        dist_sum : array
+                   Accumulated distribution.
+        all_dist_sum : array of arrays
+                   Average number of particles (accumulated over simulation) at all steps.  
+        nstep : int
+                   Accumulated simulation step.        
         """
         for i in range(0, maxlev):
             idist[i] = distr[i]+idist[i]
@@ -170,7 +367,19 @@ class run_simbo:
 
     def calc_Eav(self, maxlev, distr):
         """
-        Calculate average energy from distribution.
+        Calculate average energy from distribution. Kinda useless.
+
+        Parameters
+        ----------
+        maxlev : int
+                 Highest possible level.
+        distr: array
+                 Distribution of particles over the levels.
+
+        Returns
+        -------
+        U : float
+            Average energy per particle.
         """
         U = 0
 
@@ -182,6 +391,18 @@ class run_simbo:
     def calc_Bolt_ent(self, distr):
         """
         Calculate Boltzmann entropy.
+
+        Parameters
+        ----------
+        distr: array
+               Instantaneous distribution of particles over levels.
+
+        Returns
+        -------
+        W : float
+            Boltzmann entropy
+        S_w : float
+            Statistical weight
         """
         num = np.math.factorial(self.nop)
         denom = 1
@@ -197,6 +418,16 @@ class run_simbo:
     def calc_av_ent(self, dist_sum):
         """
         Calculate Boltzmann entropy for accumulated distribution (uses Stirling approximation for N!).
+
+        Parameters
+        ----------
+        dist_sum : array
+                   Accumulated distribution.
+
+        Returns
+        -------
+        S_a : float
+              Average entropy.
         """
         num = self.nop*np.log(self.nop)-self.nop 
         denom = 0
@@ -213,6 +444,16 @@ class run_simbo:
     def calc_prob_temp(self, dist_sum):
         """
         Calculate probability distribution and do least square fit to get temperature.
+
+        Parameters
+        ----------
+        dist_sum : array
+                   Accumulated distribution.
+        
+        Returns
+        -------
+        temp : float
+               Temperature
         """
         prdist = np.zeros(len(dist_sum))
         lnprdist = np.zeros(len(dist_sum))
@@ -260,7 +501,7 @@ class run_simbo:
         all_distr.append(cum_distr)
 
         all_uav.append(self.calc_Eav(maxlev, distr))
-        W, S_w = self.calc_Bolt_ent(distr)
+        W, S_w =  self.calc_Bolt_ent(distr)
         all_wbolt.append(W)
         all_sw.append(S_w)
         all_sa.append(self.calc_av_ent(dist_sum))
@@ -300,7 +541,7 @@ class run_simbo:
         """
         max_level, max_dist, max_distr_sum = self.find_max(all_levels, all_distr, all_dist_sum)
 
-        fig = plt.figure(constrained_layout=False, figsize=(12, 8))
+        fig = plt.figure(constrained_layout=False, figsize=(9, 6))
         gs = fig.add_gridspec(2, 4)
         gs.update(wspace=0.5)
         ax1 = fig.add_subplot(gs[0, :2], )
@@ -308,12 +549,13 @@ class run_simbo:
         ax3 = fig.add_subplot(gs[1, 1:3])
 
         def animation_frame(i):
-            plt.rcParams.update({'font.size': 14})
+            plt.rcParams.update({'font.size': 11})
             ax1.cla()
 
             labels1 = np.arange(1, self.nop+1, 1)
             trimmed_dist1 = all_levels[i]
 
+            plt.rc('axes', labelsize=11)
             xrange_ = np.arange(0, self.nop+1, self.find_skips(self.nop+1))
             xticks = xrange_[1:]
             xticks = [1, *xticks]
@@ -323,8 +565,8 @@ class run_simbo:
             ax1.set_ylabel('energy')
             ax1.set_ylim(-0.2, max_level+1-0.6)
             ax1.bar(x=labels1, height=trimmed_dist1, color='b')
-            ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
-            ax1.set_position([0.1, 0.59, 0.36, 0.34])
+            ax1.set_title(f'Energy levels \n step = {i+self.nseqv+1}')
+            ax1.set_position([0.1, 0.585, 0.36, 0.34])
 
             ax2.cla()
 
@@ -337,8 +579,8 @@ class run_simbo:
             ax2.set_ylim(-0.2, self.nop+1-0.6)
             ax2.set_xlim(-0.8, max_level+1-0.2)
             ax2.bar(x=labels2, height=trimmed_dist2, color='b')
-            ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
-            ax2.set_position([0.55, 0.59, 0.36, 0.34])
+            ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv+1}')
+            ax2.set_position([0.55, 0.585, 0.36, 0.34])
 
             ax3.cla()
 
@@ -359,7 +601,7 @@ class run_simbo:
             ax3.text(xv, yv*(5/9), 'Statistical weight: \n %.2E' %(all_wbolt[i]))
             ax3.text(xv, yv*(2/9), 'Accum. distribution', fontweight='bold')
             
-            ax3.set_title(f'Accum. distribution \n accum. steps = {i}')
+            ax3.set_title(f'Accum. distribution \n accum. steps = {i+1}')
 
             if units == 'default':
                 ax3.text(xv, yv*(1/9), 'Average entropy: %.2f kJ/mol K' %(all_sa[i]*self.k_B*self.N_A))
@@ -483,18 +725,38 @@ class run_simbo:
             
             if i >= 0:
 
-               ax1.set_title(f'Energy levels \n step = {i+self.nseqv}')
-               ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv}')
-               ax3.set_title(f'Accum. distribution \n accum. steps = {i}')
+               ax1.set_title(f'Energy levels \n step = {i+self.nseqv+1}')
+               ax2.set_title(f'Distribution of levels \n step = {i+self.nseqv+1}')
+               ax3.set_title(f'Accum. distribution \n accum. steps = {i+1}')
+               
+               if (sum(all_levels[-1])==2):
+                
+                    plt.savefig('task1_a/step_%s.png' %(i+1))
 
-               plt.savefig('step_%s.png' %(i))
+               elif (sum(all_levels[-1])==10) and (self.nop==2):
+                    
+                    plt.savefig('task1_b/step_%s.png' %(i+1))
+
+               else:
+
+                    plt.savefig('task2/step_%s.png' %(i+1))
 
             else:
 
-               ax1.set_title(f'Energy levels \n step = {self.nop*200+self.nseqv-1}')
-               ax2.set_title(f'Distribution of levels \n step = {self.nop*200+self.nseqv-1}')
-               ax3.set_title(f'Accum. distribution \n accum. steps = {self.nop*200-1}')
+               ax1.set_title(f'Energy levels \n step = {self.nop*200+self.nseqv}')
+               ax2.set_title(f'Distribution of levels \n step = {self.nop*200+self.nseqv}')
+               ax3.set_title(f'Accum. distribution \n accum. steps = {self.nop*200}')
 
-               plt.savefig('final_step.png')
+               if (sum(all_levels[-1])==2):
+                
+                    plt.savefig('task1_a/final_step.png')
+
+               elif (sum(all_levels[-1])==10) and (self.nop==2):
+
+                    plt.savefig('task1_b/final_step.png') 
+
+               else:
+
+                    plt.savefig('task2/final_step.png')
 
             plt.close()
