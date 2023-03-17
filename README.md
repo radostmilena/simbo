@@ -1,4 +1,4 @@
-Jupyter Notebook and code for Boltzmann lab. Documentation is in the docs folder, can be open by running
+Jupyter Notebook and code for Boltzmann lab. Documentation is in the docs folder, can be opened by running
  
      xdg-open _build/html/index.html
 
